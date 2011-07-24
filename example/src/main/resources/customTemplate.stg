@@ -1,0 +1,39 @@
+group defaultTemplate;
+
+classDefinition(packageName, className, fields) ::= <<
+$if(packageName)$
+$package()$
+$endif$
+
+/**
+ * This class is generated. DO NOT MODIFY! 
+ */
+public class $className$ {
+    
+    $fields:constant()$
+    
+    private final String key;
+
+    private $className$(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String toString() {
+        return this.key;
+    }
+
+}
+>>
+
+constant() ::= << 
+public final static $className$ $it.name$ = new $className$("$it.value$");
+>>
+
+package() ::= <<
+package $packageName$;
+>>

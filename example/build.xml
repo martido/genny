@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="genny_example">
+
+	<property name="dir.build" value="build" />
+	<property name="dir.build.classes" value="build/classes" />
+	<property name="dir.build.target" value="build/target" />
+	<property name="dir.lib" value="lib" />
+	<property name="dir.src" value="src/main/java" />
+	<property name="dir.res" value="src/main/resources" />
+	<property name="dir.conf" value="src/config/java" />
+	<property name="dir.gen" value="src/generated/java" />
+
+	<path id="project.classpath">
+		<pathelement location="${dir.build.classes}" />
+		<fileset dir="${dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${dir.gen}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="bootstrap">
+		<!-- Create directories. -->
+		<mkdir dir="${dir.build.classes}" />
+		<mkdir dir="${dir.build.target}" />
+		<mkdir dir="${dir.gen}" />
+
+		<!-- Copy resources to build/classes. -->
+		<copy todir="${dir.build.classes}">
+			<fileset dir="${dir.res}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Compiles the main source files of the application in src/main/java 
+	     as well as any generated sources under src/generated/java. -->
+	<target name="compile" depends="clean, bootstrap">
+		<javac destdir="${dir.build.classes}" classpathref="project.classpath" debug="on" includeantruntime="false">
+			<src path="${dir.src}" />
+			<src path="${dir.gen}" />
+		</javac>
+	</target>
+
+	<!-- Separately compiles the source files in src/config/java. -->
+	<target name="compileConfig" depends="clean, bootstrap">
+		<javac destdir="${dir.build.classes}" classpathref="project.classpath" debug="on" includeantruntime="false">
+			<src path="${dir.conf}" />
+		</javac>
+	</target>
+
+	<taskdef name="genny" classname="de.martido.genny.ant.GennyTask" classpathref="project.classpath" />
+
+	<!-- Generates a Resource class using no external configuration source file. -->	
+	<target name="exampleSimple" depends="clean, bootstrap">
+		<genny targetClass="de.martido.genny.example.resources.Resource" baseDirectory="${dir.gen}" verbose="true">
+			<fileset file="${dir.res}/MessageResources.properties" />
+		</genny>
+	</target>
+
+	<!-- Generates classes using an external configuration file. In order to avoid a circular 
+	     dependency during compilation the configuration classes are compiled on their own. 
+	     As an alternative we could pull the classes into a separate JAR. -->
+
+	<target name="example" depends="compileConfig">
+		<genny configurationClass="de.martido.genny.example.generator.ResourceBundleConfiguration" verbose="true" />
+		<genny configurationClass="de.martido.genny.example.generator.PropertiesConfiguration" verbose="true" />
+		<genny configurationClass="de.martido.genny.example.generator.XmlConfiguration" verbose="true" />
+	</target>
+	
+</project>

@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+version = "1.0"
+
+sourceSets {
+  config
+  generated
+}
+
+configuration {
+  config
+}
+
+repositories {
+  mavenCentral()
+	flatDir name: 'localRepository', dirs: 'lib'
+}
+
+dependencies {
+	config name: 'genny', version: '1.0'
+  config group: 'org.antlr', name: 'stringtemplate', version: '3.2.1'
+}
+
+eclipseClasspath {
+	dependsOn cleanEclipseClasspath
+}
