@@ -1,0 +1,15 @@
+.classpath
+.project
+.settings/
+.gradle/
+bin/
+build/
+src/test/generated
+example/.classpath
+example/.project
+example/.settings/
+example/.gradle/
+example/bin/
+example/build/
+example/lib/*.jar
+example/.ant-targets-build.xml
