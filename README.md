@@ -1,4 +1,4 @@
-Genny is a simple library for generating Java classes out of text files. I'm using it mainly with 
+Genny is a simple library for generating Java classes from text files. I'm using it mainly with 
 plain old property files to avoid having to work with strings.
 
 For example a resource bundle containing the following key/value pairs ...
