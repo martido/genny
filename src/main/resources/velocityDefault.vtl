@@ -1,0 +1,15 @@
+#if($packageName)
+package $packageName;
+#end
+
+/**
+ * This class is generated. DO NOT MODIFY! 
+ */
+public class $className {    
+    
+    #foreach( $field in $fields)
+      #set ( $mapped = $fieldMapper.map($field) )
+      public static final String $mapped.name = "$mapped.value";
+    #end
+    
+}

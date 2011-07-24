@@ -1,0 +1,24 @@
+group stringTemplateDefault;
+
+classDefinition(packageName, className, fields) ::= <<
+$if(packageName)$
+$package()$
+$endif$
+
+/**
+ * This class is generated. DO NOT MODIFY! 
+ */
+public class $className$ {    
+    
+    $fields:constant()$
+    
+}
+>>
+
+constant() ::= << 
+public static final String $it.name$ = "$it.value$";
+>>
+
+package() ::= <<
+package $packageName$;
+>>

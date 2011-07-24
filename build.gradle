@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+version = "1.0"
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile(group: 'org.apache.ant', name: 'ant', version: '1.8.2') {
+    exclude module: 'ant-launcher'
+  }
+  compile(group: 'com.sun.codemodel', name: 'codemodel', version: '2.4')
+  compile(group: 'org.antlr', name: 'stringtemplate', version: '3.2.1')
+  compile(group: 'org.apache.velocity', name: 'velocity', version: '1.7') {
+    exclude module: 'oro'
+  }
+  testCompile(group: 'junit', name: 'junit', version: '4.8.2')
+}
+
+task createWrapper(type: Wrapper) {
+  gradleVersion = "1.0-milestone-3"
+}
+
+task testPrepare {
+  description = ""
+} << {
+  dir = new File("src/test/generated")
+  if(dir.exists()) {
+    dir.eachDir {
+      println "Deleting directory '${it.path}'"
+      delete(it)
+    }
+  }
+  else {
+    dir.mkdirs()
+  }
+}
+
+test {
+  dependsOn testPrepare
+}
+
+task release(dependsOn: build) {
+  description = "Releases the library."
+} << { 
+  println "Releasing ..."
+}
+
+eclipseClasspath {
+  dependsOn cleanEclipseClasspath
+}
