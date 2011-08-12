@@ -37,7 +37,7 @@ import de.martido.genny.SourceFileGenerator;
 public class SimpleSourceFileGenerator extends AbstractSourceFileGenerator {
 
   @Override
-  public void generate(TargetDefinition targetDefinition,
+  public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,
       FieldFilter fieldFilter)
@@ -45,15 +45,15 @@ public class SimpleSourceFileGenerator extends AbstractSourceFileGenerator {
 
     StringBuilder sb = new StringBuilder();
 
-    if (!targetDefinition.isDefaultPackage()) {
-      sb.append("package " + targetDefinition.getPackageName() + ";\n\n");
+    if (!sourceFile.isDefaultPackage()) {
+      sb.append("package " + sourceFile.getPackageName() + ";\n\n");
     }
 
     sb.append("/**\n");
     sb.append(" * This class is generated. DO NOT MODIFY!\n");
     sb.append(" */\n");
 
-    sb.append("public class " + targetDefinition.getSimpleName() + "{\n");
+    sb.append("public class " + sourceFile.getSimpleName() + "{\n");
     sb.append("\n");
     for (Field f : this.getFields(fieldProvider, fieldMapper, fieldFilter)) {
       sb.append("\tpublic static final String " + f.getName() + " = \"" + f.getValue() + "\";\n");
@@ -65,7 +65,7 @@ public class SimpleSourceFileGenerator extends AbstractSourceFileGenerator {
     boolean thrown = false;
     try {
 
-      File file = this.createFile(targetDefinition);
+      File file = this.createFile(sourceFile);
       FileOutputStream os = new FileOutputStream(file, false);
       writer = new OutputStreamWriter(os, Charset.forName("UTF-8"));
       writer.append(sb.toString());

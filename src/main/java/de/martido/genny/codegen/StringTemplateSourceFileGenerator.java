@@ -71,7 +71,7 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
   }
 
   @Override
-  public void generate(TargetDefinition targetDefinition,
+  public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,
       FieldFilter fieldFilter)
@@ -92,8 +92,8 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
       List<Field> fields = this.applyFieldMapper(fieldProvider, fieldMapper, fieldFilter);
 
       template = templateGroup.getInstanceOf("classDefinition");
-      template.setAttribute("packageName", targetDefinition.getPackageName());
-      template.setAttribute("className", targetDefinition.getSimpleName());
+      template.setAttribute("packageName", sourceFile.getPackageName());
+      template.setAttribute("className", sourceFile.getSimpleName());
       template.setAttribute("fields", fields);
 
     } catch (Exception ex) {
@@ -116,7 +116,7 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
     Writer writer = null;
     try {
 
-      File file = this.createFile(targetDefinition);
+      File file = this.createFile(sourceFile);
       FileOutputStream os = new FileOutputStream(file, false);
       writer = new OutputStreamWriter(os, Charset.forName("UTF-8"));
       writer.append(template.toString());

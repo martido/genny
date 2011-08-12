@@ -16,11 +16,11 @@
 package de.martido.genny.codegen;
 
 /**
- * Definition of the target source file that should be generated.
+ * The source file that should be generated.
  * 
  * @author Martin Dobmeier
  */
-public class TargetDefinition {
+public class SourceFile {
 
   private static final String SEPARATOR = System.getProperty("file.separator");
 
@@ -36,7 +36,7 @@ public class TargetDefinition {
   /** The base directory of the Java source file. */
   private final String baseDirectory;
 
-  public TargetDefinition(String fullyQualifiedName, String baseDirectory) {
+  public SourceFile(String fullyQualifiedName, String baseDirectory) {
     this.fullyQualifiedName = fullyQualifiedName;
     int lastDot = fullyQualifiedName.lastIndexOf(".");
     if (lastDot != -1) {

@@ -31,7 +31,7 @@ public interface FieldMapper {
    * 
    * @param field
    *          <i>mandatory<i> - the {@link Field} to apply the mapping to.
-   * @return A transformed {@link Field}.
+   * @return A new {@link Field}.
    */
   Field map(Field field);
 

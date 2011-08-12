@@ -15,7 +15,7 @@
  */
 package de.martido.genny;
 
-import de.martido.genny.codegen.TargetDefinition;
+import de.martido.genny.codegen.SourceFile;
 
 /**
  * A source file generator.
@@ -25,8 +25,8 @@ import de.martido.genny.codegen.TargetDefinition;
 public interface SourceFileGenerator {
 
   /**
-   * @param targetDefinition
-   *          <i>mandatory</i> - a definition of the source file that should be generated.
+   * @param sourceFile
+   *          <i>mandatory</i> - the source file that should be generated.
    * @param field
    *          <i>mandatory</i> - a {@link FieldProvider} to provide the data for each field.
    * @param fieldMapper
@@ -36,7 +36,7 @@ public interface SourceFileGenerator {
    * @throws Exception
    *           If the source file could not be generated.
    */
-  void generate(TargetDefinition targetDefinition,
+  void generate(SourceFile sourceFile,
       FieldProvider field,
       FieldMapper fieldMapper,
       FieldFilter fieldFilter)

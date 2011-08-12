@@ -69,14 +69,14 @@ public abstract class AbstractSourceFileGenerator implements SourceFileGenerator
   /**
    * Creates the actual source file and, if necessary, all parent directories.
    * 
-   * @param targetDefinition
-   *          <i>mandatory</i> - the {@link TargetDefinition}.
+   * @param sourceFile
+   *          <i>mandatory</i> - the {@link SourceFile}.
    * @return A {@code File}.
    * @throws IOException
    *           If an I/O error occured.
    */
-  protected File createFile(TargetDefinition targetDefinition) throws IOException {
-    File file = new File(targetDefinition.asPath());
+  protected File createFile(SourceFile sourceFile) throws IOException {
+    File file = new File(sourceFile.asPath());
     Files.createParentDirs(file);
     Files.touch(file);
     return file;

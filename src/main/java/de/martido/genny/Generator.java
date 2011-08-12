@@ -16,7 +16,7 @@
 package de.martido.genny;
 
 import de.martido.genny.codegen.SimpleSourceFileGenerator;
-import de.martido.genny.codegen.TargetDefinition;
+import de.martido.genny.codegen.SourceFile;
 import de.martido.genny.util.Logger;
 
 /**
@@ -58,17 +58,16 @@ public class Generator {
 
   private void generate(GeneratorDefinition def) throws Exception {
 
-    TargetDefinition targetDefinition = this.createTargetDefinition(def);
+    SourceFile sourceFile = this.createSourceFile(def);
     FieldProvider fieldProvider = def.getFieldProvider();
     FieldMapper fieldMapper = this.createFieldMapper(def);
     FieldFilter fieldFilter = this.createFieldFilter(def);
     SourceFileGenerator sourceFileGenerator = this.createSourceFileGenerator(def);
-
-    sourceFileGenerator.generate(targetDefinition, fieldProvider, fieldMapper, fieldFilter);
+    sourceFileGenerator.generate(sourceFile, fieldProvider, fieldMapper, fieldFilter);
   }
 
-  private TargetDefinition createTargetDefinition(GeneratorDefinition def) {
-    return new TargetDefinition(def.getTargetClass(), def.getBaseDirectory());
+  private SourceFile createSourceFile(GeneratorDefinition def) {
+    return new SourceFile(def.getTargetClass(), def.getBaseDirectory());
   }
 
   private FieldMapper createFieldMapper(GeneratorDefinition def) {

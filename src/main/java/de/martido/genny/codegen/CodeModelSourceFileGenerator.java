@@ -43,14 +43,14 @@ import de.martido.genny.SourceFileGenerator;
 public class CodeModelSourceFileGenerator extends AbstractSourceFileGenerator {
 
   @Override
-  public void generate(TargetDefinition targetDefinition,
+  public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,
       FieldFilter fieldFilter)
       throws Exception {
 
     JCodeModel cm = new JCodeModel();
-    JDefinedClass _class = cm._class(targetDefinition.getFullyQualifiedName());
+    JDefinedClass _class = cm._class(sourceFile.getFullyQualifiedName());
 
     // Create some JavaDoc.
     JDocComment doc = _class.javadoc();
@@ -83,7 +83,7 @@ public class CodeModelSourceFileGenerator extends AbstractSourceFileGenerator {
     body._return(JExpr.refthis("key"));
 
     // Generate the Java source file.
-    File file = this.createFile(targetDefinition);
+    File file = this.createFile(sourceFile);
     cm.build(file);
   }
 

@@ -65,7 +65,7 @@ public class VelocitySourceFileGenerator extends AbstractSourceFileGenerator {
   }
 
   @Override
-  public void generate(TargetDefinition targetDefinition,
+  public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,
       FieldFilter fieldFilter)
@@ -75,8 +75,8 @@ public class VelocitySourceFileGenerator extends AbstractSourceFileGenerator {
     engine.init(this.loadProperties());
 
     VelocityContext context = new VelocityContext();
-    context.put("packageName", targetDefinition.getPackageName());
-    context.put("className", targetDefinition.getSimpleName());
+    context.put("packageName", sourceFile.getPackageName());
+    context.put("className", sourceFile.getSimpleName());
     context.put("fields", fieldProvider.provide(fieldFilter));
     context.put("fieldMapper", fieldMapper);
 
@@ -84,7 +84,7 @@ public class VelocitySourceFileGenerator extends AbstractSourceFileGenerator {
     boolean thrown = false;
     try {
 
-      File file = this.createFile(targetDefinition);
+      File file = this.createFile(sourceFile);
       writer = new FileWriter(file);
       Template template = engine.getTemplate(this.templateFileName, "UTF-8");
       template.merge(context, writer);
