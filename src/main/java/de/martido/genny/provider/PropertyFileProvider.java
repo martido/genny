@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,8 @@ import de.martido.genny.util.Logger;
 
 /**
  * A default {@link FieldProvider} that works with regular Java property files like
- * {@code java.util.Properties} and {@code java.util.PropertyResourceBundle}. Therefore,
- * the name and value of a provided {@link Field} will be the property's key.
+ * {@code java.util.Properties} and {@code java.util.PropertyResourceBundle}. Therefore, the name
+ * and value of a provided {@link Field} will be the property's key.
  * <p>
  * The following defaults apply if not otherwise specified:
  * <ul>
@@ -158,29 +159,32 @@ public class PropertyFileProvider implements FieldProvider {
   @Override
   public List<Field> provide(FieldFilter fieldFilter) throws Exception {
 
-    List<Field> res = new ArrayList<Field>();
-
     Properties all = new Properties();
     for (String fileName : this.propertyFileNames) {
       Properties props = this.load(fileName, this.charset, this.loadFromClasspath);
       all.putAll(props);
     }
 
+    if (all.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    List<Field> fields = new ArrayList<Field>(all.size());
     for (Entry<Object, Object> entry : all.entrySet()) {
       String key = (String) entry.getKey();
       Field f = new Field(key, key);
       if (fieldFilter.include(f)) {
-        res.add(f);
+        fields.add(f);
       }
     }
 
     if (Logger.get().isVerbose()) {
-      for (Field field : res) {
+      for (Field field : fields) {
         System.out.println("Generated field: " + field);
       }
     }
 
-    return res;
+    return fields;
   }
 
   private Properties load(String propertyFileName, Charset charset, boolean fromClasspath)
