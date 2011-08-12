@@ -41,8 +41,8 @@ import de.martido.genny.util.Logger;
  * <p>
  * The following defaults apply if not otherwise specified:
  * <ul>
- * <li>Property files are loaded from the classpath.</li>
- * <li>Property files are encoded using the platform default.</li>
+ * <li>Files are loaded from the classpath.</li>
+ * <li>Files are assumed to be UTF-8 encoded.</li>
  * </ul>
  * 
  * @author Martin Dobmeier
@@ -78,7 +78,7 @@ public class PropertyFileProvider implements FieldProvider {
     this.loadFromClasspath = loadFromClasspath != null ? loadFromClasspath : true;
 
     Charset charset = (Charset) context.get("charset");
-    this.charset = charset != null ? charset : Charset.forName(System.getProperty("file.encoding"));
+    this.charset = charset != null ? charset : Charset.forName("UTF-8");
   }
 
   public static AwaitingLoadBehaviour forFile(String propertyFileName) {
