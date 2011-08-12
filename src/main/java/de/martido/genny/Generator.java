@@ -16,7 +16,6 @@
 package de.martido.genny;
 
 import de.martido.genny.codegen.SimpleSourceFileGenerator;
-import de.martido.genny.codegen.SourceFile;
 import de.martido.genny.util.Logger;
 
 /**

@@ -15,7 +15,6 @@
  */
 package de.martido.genny;
 
-import de.martido.genny.codegen.SourceFile;
 
 /**
  * A source file generator.

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.martido.genny.codegen;
+package de.martido.genny;
 
 /**
  * The source file that should be generated.

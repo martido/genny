@@ -29,6 +29,7 @@ import org.apache.velocity.app.VelocityEngine;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.FieldMapper;
 import de.martido.genny.FieldProvider;
+import de.martido.genny.SourceFile;
 import de.martido.genny.SourceFileGenerator;
 
 /**
