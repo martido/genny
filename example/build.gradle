@@ -10,18 +10,14 @@ sourceSets {
   generated
 }
 
-configurations {
-  config
-}
-
 repositories {
   mavenCentral()
 	flatDir name: 'localRepository', dirs: 'lib'
 }
 
 dependencies {
-	config name: 'genny', version: '0.1-SNAPSHOT'
-  config group: 'org.antlr', name: 'stringtemplate', version: '3.2.1'
+  runtime name: 'genny', version: '0.1-SNAPSHOT'
+  runtime group: 'org.antlr', name: 'stringtemplate', version: '3.2.1'
 }
 
 eclipseClasspath {

@@ -44,6 +44,12 @@ test {
   dependsOn testPrepare
 }
 
+task sourcesJar(type: Jar, dependsOn:classes) { 
+  description = "Creates a JAR containing all main sources."
+  classifier = 'sources' 
+  from sourceSets.main.allSource 
+} 
+
 task release(dependsOn: build) {
   description = "Releases the library."
 } << { 
