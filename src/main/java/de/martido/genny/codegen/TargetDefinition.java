@@ -75,6 +75,13 @@ public class TargetDefinition {
     return this.getBaseDirectory() + SEPARATOR + sourceFilePath;
   }
 
+  /**
+   * @return {@code True} if target source file is in the default package; {@code false} otherwise.
+   */
+  public boolean isDefaultPackage() {
+    return this.packageName == null;
+  }
+
   @Override
   public String toString() {
     return "TargetDefinition [" //

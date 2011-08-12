@@ -57,6 +57,7 @@ public abstract class AbstractTestCase {
   @Parameters
   public static List<Object[]> data() {
     List<Object[]> data = new ArrayList<Object[]>();
+    data.add(new Object[] { TemplateEngine.SIMPLE });
     data.add(new Object[] { TemplateEngine.STRINGTEMPLATE });
     data.add(new Object[] { TemplateEngine.VELOCITY });
     return data;

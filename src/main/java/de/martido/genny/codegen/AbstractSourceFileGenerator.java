@@ -17,9 +17,16 @@ package de.martido.genny.codegen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.base.Files;
 
+import de.martido.genny.Field;
+import de.martido.genny.FieldFilter;
+import de.martido.genny.FieldMapper;
+import de.martido.genny.FieldProvider;
 import de.martido.genny.SourceFileGenerator;
 
 /**
@@ -28,6 +35,36 @@ import de.martido.genny.SourceFileGenerator;
  * @author Martin Dobmeier
  */
 public abstract class AbstractSourceFileGenerator implements SourceFileGenerator {
+
+  /**
+   * Gets the fields that should be generated.
+   * 
+   * @param field
+   *          <i>not null</i> - a {@link FieldProvider} to provide the data for each field.
+   * @param fieldMapper
+   *          <i>not null</i> - a {@link FieldMapper} to optionally transform each field.
+   * @param fieldFilter
+   *          <i>not null</i> - a {@link FieldFilter} to optionally filter fields.
+   * @return A list of {@link Field}s; may be empty, but never {@code null}.
+   * @throws Exception
+   *           If an error occured.
+   */
+  protected List<Field> getFields(FieldProvider fieldProvider, FieldMapper fieldMapper,
+      FieldFilter fieldFilter) throws Exception {
+
+    List<Field> fields = fieldProvider.provide(fieldFilter);
+
+    if (fields.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    List<Field> mapped = new ArrayList<Field>(fields.size());
+    for (Field f : fields) {
+      mapped.add(fieldMapper.map(f));
+    }
+
+    return mapped;
+  }
 
   /**
    * Creates the actual source file and, if necessary, all parent directories.

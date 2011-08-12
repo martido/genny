@@ -15,7 +15,7 @@
  */
 package de.martido.genny;
 
-import de.martido.genny.codegen.StringTemplateSourceFileGenerator;
+import de.martido.genny.codegen.SimpleSourceFileGenerator;
 import de.martido.genny.codegen.TargetDefinition;
 import de.martido.genny.util.Logger;
 
@@ -81,7 +81,7 @@ public class Generator {
 
   private SourceFileGenerator createSourceFileGenerator(GeneratorDefinition def) {
     return def.getSourceFileGenerator() == null
-        ? new StringTemplateSourceFileGenerator()
+        ? new SimpleSourceFileGenerator()
         : def.getSourceFileGenerator();
   }
 

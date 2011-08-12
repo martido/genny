@@ -22,6 +22,15 @@ import de.martido.genny.SourceFileGenerator;
  */
 public enum TemplateEngine {
 
+  SIMPLE("simple") {
+
+    @Override
+    public SourceFileGenerator getSourceFileGenerator(String template) {
+      return new SimpleSourceFileGenerator();
+    }
+
+  },
+
   STRINGTEMPLATE("stg") {
 
     @Override
