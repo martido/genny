@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-version = "1.0"
+version = "0.1-SNAPSHOT"
 
 sourceSets {
   config
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-	config name: 'genny', version: '1.0'
+	config name: 'genny', version: '0.1-SNAPSHOT'
   config group: 'org.antlr', name: 'stringtemplate', version: '3.2.1'
 }
 
