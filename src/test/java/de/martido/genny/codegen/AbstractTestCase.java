@@ -36,7 +36,7 @@ import javax.tools.ToolProvider;
 import org.junit.Assert;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.martido.genny.Generator;
+import de.martido.genny.Genny;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
 
@@ -79,7 +79,7 @@ public abstract class AbstractTestCase {
     };
 
     try {
-      new Generator().generateFrom(module);
+      new Genny().generateFrom(module);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());

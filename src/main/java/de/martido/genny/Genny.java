@@ -23,13 +23,13 @@ import de.martido.genny.util.Logger;
  * 
  * @author Martin Dobmeier
  */
-public class Generator {
+public class Genny {
 
-  public Generator() {
+  public Genny() {
     this(false);
   }
 
-  public Generator(boolean verbose) {
+  public Genny(boolean verbose) {
     Logger.set(new Logger(verbose));
   }
 

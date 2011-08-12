@@ -24,7 +24,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
-import de.martido.genny.Generator;
+import de.martido.genny.Genny;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
 import de.martido.genny.provider.PropertyFileProvider;
@@ -160,7 +160,7 @@ public class GennyTask extends Task {
     }
 
     try {
-      new Generator(this.verbose).generateFrom(conf);
+      new Genny(this.verbose).generateFrom(conf);
     } catch (Exception ex) {
       throw new BuildException(ex);
     }
