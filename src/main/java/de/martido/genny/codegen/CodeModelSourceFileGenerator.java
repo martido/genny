@@ -40,7 +40,7 @@ import de.martido.genny.SourceFileGenerator;
  * 
  * @author Martin Dobmeier
  */
-public class CodeModelSourceFileGenerator implements SourceFileGenerator {
+public class CodeModelSourceFileGenerator extends AbstractSourceFileGenerator {
 
   @Override
   public void generate(TargetDefinition targetDefinition,
@@ -83,7 +83,7 @@ public class CodeModelSourceFileGenerator implements SourceFileGenerator {
     body._return(JExpr.refthis("key"));
 
     // Generate the Java source file.
-    File file = new File(targetDefinition.getBaseDirectory());
+    File file = this.createFile(targetDefinition);
     cm.build(file);
   }
 
