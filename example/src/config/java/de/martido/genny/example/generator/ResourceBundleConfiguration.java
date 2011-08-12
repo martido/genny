@@ -24,7 +24,6 @@ import de.martido.genny.provider.PropertyFileProvider;
 
 public class ResourceBundleConfiguration implements GennyConfiguration {
 
-  @Override
   public List<GeneratorDefinition> configure() {
     GeneratorDefinition def = new GeneratorDefinition();
     def.setTargetClass("de.martido.genny.example.generated.Resource");

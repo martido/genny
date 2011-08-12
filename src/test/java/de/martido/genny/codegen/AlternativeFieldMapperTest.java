@@ -45,7 +45,6 @@ public class AlternativeFieldMapperTest extends AbstractTestCase {
     // A prefix should be excluded from both field names and value.
     // Also, field names should be upper case.
     def.setFieldMapper(new FieldMapper() {
-      @Override
       public Field map(Field f) {
         String name = this.transform(f.getName()).toUpperCase();
         String value = this.transform((String) f.getValue());

@@ -37,7 +37,6 @@ import de.martido.genny.SourceFileGenerator;
  */
 public class SimpleSourceFileGenerator extends AbstractSourceFileGenerator {
 
-  @Override
   public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,

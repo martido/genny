@@ -71,7 +71,6 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
     this.templateGroupFileName = templateGroupFileName;
   }
 
-  @Override
   public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,

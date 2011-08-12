@@ -36,7 +36,6 @@ public interface FieldFilter {
    */
   public static final FieldFilter INCLUDE_ALL = new FieldFilter() {
 
-    @Override
     public boolean include(Field field) {
       return true;
     }

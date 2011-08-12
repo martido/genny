@@ -36,8 +36,8 @@ import javax.tools.ToolProvider;
 import org.junit.Assert;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.martido.genny.Genny;
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.Genny;
 import de.martido.genny.GennyConfiguration;
 
 /**
@@ -72,7 +72,6 @@ public abstract class AbstractTestCase {
     def.setSourceFileGenerator(this.templateEngine.getSourceFileGenerator(template));
 
     GennyConfiguration module = new GennyConfiguration() {
-      @Override
       public List<GeneratorDefinition> configure() {
         return Arrays.asList(def);
       }

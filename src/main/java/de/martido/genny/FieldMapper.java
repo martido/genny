@@ -42,7 +42,6 @@ public interface FieldMapper {
    */
   public static final FieldMapper DEFAULT = new FieldMapper() {
 
-    @Override
     public Field map(Field f) {
       String name = f.getName().replaceAll("\\.", "_");
       return new Field(name, f.getValue(), f.getJavadoc());
@@ -59,7 +58,6 @@ public interface FieldMapper {
    */
   public static final FieldMapper NO_MAPPING = new FieldMapper() {
 
-    @Override
     public Field map(Field f) {
       return f;
     }

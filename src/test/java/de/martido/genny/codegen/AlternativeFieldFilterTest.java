@@ -44,7 +44,6 @@ public class AlternativeFieldFilterTest extends AbstractTestCase {
 
     // Exclude a property called 'property.the.uglzy'.
     def.setFieldFilter(new FieldFilter() {
-      @Override
       public boolean include(Field field) {
         return field.getName().equals("property.the.ugly") ? false : true;
       }

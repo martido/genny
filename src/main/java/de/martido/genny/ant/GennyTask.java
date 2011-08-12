@@ -24,8 +24,8 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
-import de.martido.genny.Genny;
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.Genny;
 import de.martido.genny.GennyConfiguration;
 import de.martido.genny.provider.PropertyFileProvider;
 
@@ -100,9 +100,11 @@ public class GennyTask extends Task {
    * Reflectively creates an instance of {@code className} which must be assignable to a reference
    * of type {@link GennyConfiguration}.
    * 
-   * @param className <i>mandatory</i> - the name of the Java class to instantiate.
+   * @param className
+   *          <i>mandatory</i> - the name of the Java class to instantiate.
    * @return A {@link GennyConfiguration}.
-   * @throws BuildException If the configuration class could not be created.
+   * @throws BuildException
+   *           If the configuration class could not be created.
    */
   private GennyConfiguration createConfiguration(String className) throws BuildException {
     try {
@@ -134,7 +136,6 @@ public class GennyTask extends Task {
     }
 
     return new GennyConfiguration() {
-      @Override
       public List<GeneratorDefinition> configure() {
         GeneratorDefinition def = new GeneratorDefinition();
         def.setTargetClass(GennyTask.this.targetClass);

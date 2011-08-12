@@ -65,7 +65,6 @@ public class VelocitySourceFileGenerator extends AbstractSourceFileGenerator {
     this.templateFileName = templateFileName;
   }
 
-  @Override
   public void generate(SourceFile sourceFile,
       FieldProvider fieldProvider,
       FieldMapper fieldMapper,
