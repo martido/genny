@@ -22,7 +22,7 @@ dependencies {
 }
 
 task createWrapper(type: Wrapper) {
-  gradleVersion = "1.0-milestone-3"
+  gradleVersion = "1.0-milestone-4"
 }
 
 task testPrepare {
