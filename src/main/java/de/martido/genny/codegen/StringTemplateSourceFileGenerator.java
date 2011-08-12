@@ -17,10 +17,12 @@ package de.martido.genny.codegen;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +78,8 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
       throws Exception {
 
     Reader reader = null;
+    StringTemplate template = null;
+    boolean thrown = false;
     try {
 
       ClassLoader classLoader = this.getClass().getClassLoader();
@@ -87,20 +91,51 @@ public class StringTemplateSourceFileGenerator extends AbstractSourceFileGenerat
 
       List<Field> fields = this.applyFieldMapper(fieldProvider, fieldMapper, fieldFilter);
 
-      StringTemplate template = templateGroup.getInstanceOf("classDefinition");
+      template = templateGroup.getInstanceOf("classDefinition");
       template.setAttribute("packageName", targetDefinition.getPackageName());
       template.setAttribute("className", targetDefinition.getSimpleName());
       template.setAttribute("fields", fields);
 
-      File file = this.createFile(targetDefinition);
-      FileOutputStream fos = new FileOutputStream(file, false);
-      OutputStreamWriter osw = new OutputStreamWriter(fos, Charset.forName("UTF-8"));
-      osw.append(template.toString());
-      osw.flush();
-
+    } catch (Exception ex) {
+      thrown = true;
+      throw ex;
     } finally {
-      if (reader != null) {
-        reader.close();
+      try {
+        if (reader != null) {
+          reader.close();
+        }
+      } catch (IOException ex) {
+        if (thrown) {
+          ex.printStackTrace(); // Propagate original exception.
+        } else {
+          throw ex;
+        }
+      }
+    }
+
+    Writer writer = null;
+    try {
+
+      File file = this.createFile(targetDefinition);
+      FileOutputStream os = new FileOutputStream(file, false);
+      writer = new OutputStreamWriter(os, Charset.forName("UTF-8"));
+      writer.append(template.toString());
+      writer.flush();
+
+    } catch (Exception ex) {
+      thrown = true;
+      throw ex;
+    } finally {
+      try {
+        if (writer != null) {
+          writer.close();
+        }
+      } catch (IOException ex) {
+        if (thrown) {
+          ex.printStackTrace(); // Propagate original exception.
+        } else {
+          throw ex;
+        }
       }
     }
   }

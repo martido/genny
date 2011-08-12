@@ -15,7 +15,6 @@
  */
 package de.martido.genny.codegen;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -72,29 +71,39 @@ public class VelocitySourceFileGenerator extends AbstractSourceFileGenerator {
       FieldFilter fieldFilter)
       throws Exception {
 
+    VelocityEngine engine = new VelocityEngine();
+    engine.init(this.loadProperties());
+
+    VelocityContext context = new VelocityContext();
+    context.put("packageName", targetDefinition.getPackageName());
+    context.put("className", targetDefinition.getSimpleName());
+    context.put("fields", fieldProvider.provide(fieldFilter));
+    context.put("fieldMapper", fieldMapper);
+
     Writer writer = null;
+    boolean thrown = false;
     try {
 
-      VelocityEngine engine = new VelocityEngine();
-      engine.init(this.loadProperties());
-
-      VelocityContext context = new VelocityContext();
-      context.put("packageName", targetDefinition.getPackageName());
-      context.put("className", targetDefinition.getSimpleName());
-      context.put("fields", fieldProvider.provide(fieldFilter));
-      context.put("fieldMapper", fieldMapper);
-
       File file = this.createFile(targetDefinition);
-      writer = new BufferedWriter(new FileWriter(file));
-
+      writer = new FileWriter(file);
       Template template = engine.getTemplate(this.templateFileName, "UTF-8");
       template.merge(context, writer);
-
       writer.flush();
 
+    } catch (Exception ex) {
+      thrown = true;
+      throw ex;
     } finally {
-      if (writer != null) {
-        writer.close();
+      try {
+        if (writer != null) {
+          writer.close();
+        }
+      } catch (IOException ex) {
+        if (thrown) {
+          ex.printStackTrace(); // Propagate original exception.
+        } else {
+          throw ex;
+        }
       }
     }
   }
