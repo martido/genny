@@ -12,4 +12,5 @@ example/.gradle/
 example/bin/
 example/build/
 example/lib/*.jar
+example/src/generated/java/
 example/.ant-targets-build.xml
