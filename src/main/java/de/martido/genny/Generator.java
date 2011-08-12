@@ -37,8 +37,10 @@ public class Generator {
   /**
    * Generate source files based on the given {@link GennyConfiguration}.
    * 
-   * @param configuration The {@link GennyConfiguration}.
-   * @throws Exception If an error occurs.
+   * @param configuration
+   *          The {@link GennyConfiguration}.
+   * @throws Exception
+   *           If an error occurs.
    */
   public void generateFrom(GennyConfiguration configuration) throws Exception {
 
@@ -74,7 +76,7 @@ public class Generator {
   }
 
   private FieldFilter createFieldFilter(GeneratorDefinition def) {
-    return def.getFieldFilter() == null ? FieldFilter.DEFAULT : def.getFieldFilter();
+    return def.getFieldFilter() == null ? FieldFilter.INCLUDE_ALL : def.getFieldFilter();
   }
 
   private SourceFileGenerator createSourceFileGenerator(GeneratorDefinition def) {

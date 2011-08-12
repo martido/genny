@@ -28,9 +28,11 @@ public interface FieldProvider {
    * Provides a list of {@link Field}s.
    * 
    * @param fieldFilter
-   *          A {@link FieldFilter} to control.
-   * @return A list of {@link Field}s.
-   * @throws Exception If an error occurs.
+   *          A {@link FieldFilter} to control which fields should be included in the resulting
+   *          list; if all fields should be included use {@link FieldFilter#INCLUDE_ALL}.
+   * @return A list of {@link Field}s; may be empty, but never {@code null}.
+   * @throws Exception
+   *           If an error occurs.
    */
   List<Field> provide(FieldFilter fieldFilter) throws Exception;
 

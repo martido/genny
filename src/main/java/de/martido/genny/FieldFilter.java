@@ -34,7 +34,7 @@ public interface FieldFilter {
   /**
    * Default implementation that doesn't apply any filter.
    */
-  public static final FieldFilter DEFAULT = new FieldFilter() {
+  public static final FieldFilter INCLUDE_ALL = new FieldFilter() {
 
     @Override
     public boolean include(Field field) {
