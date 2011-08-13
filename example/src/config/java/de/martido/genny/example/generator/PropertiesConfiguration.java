@@ -15,7 +15,6 @@
  */
 package de.martido.genny.example.generator;
 
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class PropertiesConfiguration implements GennyConfiguration {
     def.setFieldProvider(PropertyFileProvider
         .forFile("src/main/resources/example.properties")
         .fromFileSystem()
-        .withCharset(Charset.forName("utf-8"))
         .build());
 
     /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
