@@ -53,7 +53,7 @@ public class SimpleSourceFileGenerator extends AbstractSourceFileGenerator {
     sb.append(" * This class is generated. DO NOT MODIFY!\n");
     sb.append(" */\n");
 
-    sb.append("public class " + sourceFile.getSimpleName() + "{\n");
+    sb.append("public class " + sourceFile.getSimpleName() + " {\n");
     sb.append("\n");
     for (Field f : this.getFields(fieldProvider, fieldMapper, fieldFilter)) {
       sb.append("\tpublic static final String " + f.getName() + " = \"" + f.getValue() + "\";\n");
