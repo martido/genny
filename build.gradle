@@ -56,22 +56,24 @@ task sourcesJar(type: Jar, dependsOn:classes) {
   from sourceSets.main.allSource 
 }
 
-task repackageJar(type: Jar, dependsOn: classes) {
-  description = "Repackage Genny; the new base package must be specified via -Porg=<package>."
-  classifier = "${org}"
-  from sourceSets.main.output.classesDir
-} << {
-  ant {
-    taskdef(name: "jarjar",
-        classname: "com.tonicsystems.jarjar.JarJarTask",
-        classpath: configurations.jarjar.asPath)
-    
-    jarjar(jarfile: archivePath, update: true) {
-      fileset dir: sourceSets.main.output.classesDir
-      rule pattern: "de.martido.**", result: "${org}.@1"
+if(hasProperty('org')) {
+  task repackageJar(type: Jar, dependsOn: classes) {
+    description = "Repackage Genny; the new base package must be specified via -Porg=<package>."
+    classifier = "${org}"
+    from sourceSets.main.output.classesDir
+  } << {
+    ant {
+      taskdef(name: "jarjar",
+          classname: "com.tonicsystems.jarjar.JarJarTask",
+          classpath: configurations.jarjar.asPath)
+      
+      jarjar(jarfile: archivePath, update: true) {
+        fileset dir: sourceSets.main.output.classesDir
+        rule pattern: "de.martido.**", result: "${org}.@1"
+      }
     }
   }
-} 
+}
 
 task release(dependsOn: build) {
   description = "Releases the library."
