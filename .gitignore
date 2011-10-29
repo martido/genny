@@ -8,9 +8,11 @@ src/test/generated
 example/.classpath
 example/.project
 example/.settings/
-example/.gradle/
-example/bin/
-example/build/
 example/lib/*.jar
 example/src/generated/java/
+example/target/
 example/.ant-targets-build.xml
+maven-plugin/.classpath
+maven-plugin/.project
+maven-plugin/.settings/
+maven-plugin/target/
