@@ -18,8 +18,6 @@ package de.martido.genny.example;
 import java.io.IOException;
 import java.util.Properties;
 
-import de.martido.genny.example.generated.Property;
-
 public class MovieCharacters {
 
   private static final Properties properties = new Properties();

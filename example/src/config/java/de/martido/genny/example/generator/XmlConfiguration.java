@@ -37,9 +37,10 @@ import de.martido.genny.GennyConfiguration;
 
 public class XmlConfiguration implements GennyConfiguration {
 
+  @Override
   public List<GeneratorDefinition> configure() {
     GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.generated.Xml");
+    def.setTargetClass("de.martido.genny.example.Xml");
     def.setBaseDirectory("src/generated/java");
     def.setFieldProvider(new XmlProvider("example.xml"));
     return Arrays.asList(def);
@@ -56,6 +57,7 @@ public class XmlConfiguration implements GennyConfiguration {
       this.xmlFileName = xmlFileName;
     }
 
+    @Override
     public List<Field> provide(FieldFilter fieldFilter) throws Exception {
 
       InputStream in = null;

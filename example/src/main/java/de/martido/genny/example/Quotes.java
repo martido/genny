@@ -18,17 +18,15 @@ package de.martido.genny.example;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import de.martido.genny.example.generated.Resource;
-
 public class Quotes {
 
   public static void main(String[] args) {
-    System.out.println(getMessage(Resource.buzz_says, Locale.ENGLISH));
-    System.out.println(getMessage(Resource.buzz_says, Locale.GERMAN));
-    System.out.println(getMessage(Resource.pinky_says, Locale.ENGLISH));
-    System.out.println(getMessage(Resource.pinky_says, Locale.GERMAN));
-    System.out.println(getMessage(Resource.brain_says, Locale.ENGLISH));
-    System.out.println(getMessage(Resource.brain_says, Locale.GERMAN));
+    System.out.println(getMessage(I18N.buzz_says, Locale.ENGLISH));
+    System.out.println(getMessage(I18N.buzz_says, Locale.GERMAN));
+    System.out.println(getMessage(I18N.pinky_says, Locale.ENGLISH));
+    System.out.println(getMessage(I18N.pinky_says, Locale.GERMAN));
+    System.out.println(getMessage(I18N.brain_says, Locale.ENGLISH));
+    System.out.println(getMessage(I18N.brain_says, Locale.GERMAN));
   }
 
   public static String getMessage(String key, Locale locale) {

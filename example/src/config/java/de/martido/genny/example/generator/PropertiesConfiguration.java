@@ -28,10 +28,11 @@ import de.martido.genny.provider.PropertyFileProvider;
 
 public class PropertiesConfiguration implements GennyConfiguration {
 
+  @Override
   public List<GeneratorDefinition> configure() {
 
     GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.generated.Property");
+    def.setTargetClass("de.martido.genny.example.Property");
     def.setBaseDirectory("src/generated/java");
     def.setFieldProvider(PropertyFileProvider
         .forFile("src/main/resources/example.properties")
@@ -40,6 +41,7 @@ public class PropertiesConfiguration implements GennyConfiguration {
 
     /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
     def.setFieldMapper(new FieldMapper() {
+      @Override
       public Field map(Field f) {
         String name = f.getName()
             .replaceFirst("prefix\\.", "")
@@ -51,6 +53,7 @@ public class PropertiesConfiguration implements GennyConfiguration {
 
     /* A custom FieldFilter: Exclude certain properties. */
     def.setFieldFilter(new FieldFilter() {
+      @Override
       public boolean include(Field field) {
         return field.getName().equals("property.internal") ? false : true;
       }

@@ -24,9 +24,10 @@ import de.martido.genny.provider.PropertyFileProvider;
 
 public class ResourceBundleConfiguration implements GennyConfiguration {
 
+  @Override
   public List<GeneratorDefinition> configure() {
     GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.generated.Resource");
+    def.setTargetClass("de.martido.genny.example.I18N");
     def.setBaseDirectory("src/generated/java");
     def.setFieldProvider(PropertyFileProvider.forFile("MessageResources.properties").build());
     return Arrays.asList(def);

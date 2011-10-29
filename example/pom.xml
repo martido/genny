@@ -57,7 +57,7 @@
 					<execution>
 						<id>gen-I18N</id>
 						<configuration>
-							<targetClass>de.martido.genny.example.generated.Resource</targetClass>
+							<targetClass>de.martido.genny.example.I18N</targetClass>
 							<baseDirectory>src/generated/java</baseDirectory>
 							<verbose>true</verbose>
 							<propertyFiles>
