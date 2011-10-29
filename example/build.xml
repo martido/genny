@@ -58,7 +58,7 @@
 
 	<!-- Generates a Resource class using no external configuration source file. -->	
 	<target name="exampleSimple" depends="clean, bootstrap">
-		<genny targetClass="de.martido.genny.example.resources.Resource" baseDirectory="${dir.gen}" verbose="true">
+		<genny targetClass="de.martido.genny.example.generated.Resource" baseDirectory="${dir.gen}" verbose="true">
 			<fileset file="${dir.res}/MessageResources.properties" />
 		</genny>
 	</target>
