@@ -1,9 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+group = "de.martido"
+version = "0.1-SNAPSHOT"
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-version = "0.1-SNAPSHOT"
 
 repositories {
   mavenCentral()
@@ -16,12 +19,12 @@ configurations {
 
 dependencies {
   compile(group: 'org.apache.ant', name: 'ant', version: '1.8.2') {
-    exclude module: 'ant-launcher'
+    exclude(group: 'org.apache.ant', module: 'ant-launcher')
   }
   compile(group: 'com.sun.codemodel', name: 'codemodel', version: '2.4')
   compile(group: 'org.antlr', name: 'stringtemplate', version: '3.2.1')
   compile(group: 'org.apache.velocity', name: 'velocity', version: '1.7') {
-    exclude module: 'oro'
+    exclude(group: 'oro', module: 'oro')
   }
   testCompile(group: 'junit', name: 'junit', version: '4.8.2')
   jarjar name: 'jarjar', version: '1.1'
@@ -79,6 +82,21 @@ task release(dependsOn: build) {
   description = "Releases the library."
 } << { 
   println "Releasing ..."
+}
+
+// Add the sources JAR artifcat to the archives configuration.
+artifacts {
+  archives sourcesJar
+}
+
+// Configure the Maven 'install' task: Don't add the 'compile' configuration to the generated POM.
+// (Taken from the Gradle docs) 
+install {
+  repositories {
+    mavenInstaller {
+      pom.scopeMappings.mappings.remove(configurations.compile)
+    }
+  }
 }
 
 eclipseClasspath {
