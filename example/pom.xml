@@ -2,12 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>de.martido</groupId>
 	<artifactId>genny-example</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>An exmaple project demonstrating 'genny'.</name>
+	<description>An example project demonstrating Genny.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,7 +43,6 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/config/java</source>
 								<source>src/generated/java</source>
 							</sources>
 						</configuration>
@@ -55,7 +55,40 @@
 				<version>0.1-SNAPSHOT</version>
 				<executions>
 					<execution>
-						<id>gen-I18N</id>
+						<id>example1</id>
+						<configuration>
+							<configurationClass>de.martido.genny.example.config.PropertiesConfiguration</configurationClass>
+							<verbose>true</verbose>
+						</configuration>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>genny</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>example2</id>
+						<configuration>
+							<configurationClass>de.martido.genny.example.config.ResourceBundleConfiguration</configurationClass>
+							<verbose>true</verbose>
+						</configuration>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>genny</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>example3</id>
+						<configuration>
+							<configurationClass>de.martido.genny.example.config.XmlConfiguration</configurationClass>
+							<verbose>true</verbose>
+						</configuration>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>genny</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>example4</id>
 						<configuration>
 							<targetClass>de.martido.genny.example.I18N</targetClass>
 							<baseDirectory>src/generated/java</baseDirectory>
@@ -85,6 +118,11 @@
 		<dependency>
 			<groupId>de.martido</groupId>
 			<artifactId>genny</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.martido</groupId>
+			<artifactId>genny-example-config</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
