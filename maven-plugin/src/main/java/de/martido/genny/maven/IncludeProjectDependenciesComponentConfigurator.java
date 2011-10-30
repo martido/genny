@@ -22,6 +22,7 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
  * Mojo.
  * 
  * @see http://goo.gl/oPLKe (Stackoverflow)
+ * @author Brian Jackson
  * @plexus.component role="org.codehaus.plexus.component.configurator.ComponentConfigurator"
  *                   role-hint="include-project-dependencies"
  * @plexus.requirement 
