@@ -16,6 +16,7 @@ import de.martido.genny.provider.PropertyFileProvider;
 /**
  * @goal genny
  * @requiresDependencyResolution runtime
+ * @configurator include-project-dependencies
  * @author Martin Dobmeier
  */
 public class GennyMojo extends AbstractMojo {
@@ -143,14 +144,12 @@ public class GennyMojo extends AbstractMojo {
         def.setBaseDirectory(GennyMojo.this.baseDirectory);
 
         /**
-         * The plugin must be associated with a build phase that is executed prior to 'compile'. If
-         * property files are loaded from the classpath, we'll have to make sure that they have been
-         * copied to the output directory and that they are available to the plugin's classloader.
-         * The preferred phase would be 'generate-sources'. However, the projects' resources won't
-         * be copied to the output directoy until the phase 'process-resources'. This does not make
-         * them available to the classloader of the plugin. We would have to work around this issue
-         * by using a custom {@code ComponentConfigurer}. Therefore, property files will be loaded
-         * from the file system.
+         * The plugin must be associated with a build phase that is executed prior to 'compile'. The
+         * preferred phase would be 'generate-sources'. However, the projects' resources won't be
+         * copied to the output directory until 'process-resources' and therefore won't be available
+         * to the plugin's classloader. So we could either use that phase together with a custom
+         * {@code ComponentConfigurer} or we could just load property files from the file system. We
+         * chose the latter.
          */
         def.setFieldProvider(PropertyFileProvider.forFiles(array).fromFileSystem().build());
         return Arrays.asList(def);
