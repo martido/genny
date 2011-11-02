@@ -5,7 +5,7 @@
 	
 	<groupId>de.martido</groupId>
 	<artifactId>genny-example</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>jar</packaging>
 
 	<description>An example project demonstrating Genny.</description>
@@ -118,12 +118,12 @@
 		<dependency>
 			<groupId>de.martido</groupId>
 			<artifactId>genny</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.martido</groupId>
 			<artifactId>genny-example-config</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.1</version>
 		</dependency>
 	</dependencies>
 

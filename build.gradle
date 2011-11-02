@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 group = "de.martido"
-version = "0.1-SNAPSHOT"
+version = "0.1"
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -59,7 +59,7 @@ task release(dependsOn: build) {
   println "Releasing ..."
 }
 
-// Add the sources JAR artifcat to the archives configuration.
+// Add the sources JAR artifact to the archives configuration.
 artifacts {
   archives sourcesJar
 }
