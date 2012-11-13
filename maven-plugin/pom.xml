@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.martido</groupId>
 	<artifactId>genny-maven-plugin</artifactId>
-	<version>0.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Genny Maven plugin</name>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>de.martido</groupId>
 			<artifactId>genny</artifactId>
-			<version>0.1</version>
+			<version>0.2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
