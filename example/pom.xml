@@ -52,7 +52,7 @@
 			<plugin>
 				<groupId>de.martido</groupId>
 				<artifactId>genny-maven-plugin</artifactId>
-				<version>0.1-SNAPSHOT</version>
+				<version>0.1</version>
 				<executions>
 					<execution>
 						<id>example1</id>
