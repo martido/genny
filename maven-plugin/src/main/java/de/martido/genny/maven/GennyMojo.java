@@ -151,7 +151,7 @@ public class GennyMojo extends AbstractMojo {
          * {@code ComponentConfigurer} or we could just load property files from the file system. We
          * chose the latter.
          */
-        def.setFieldProvider(PropertyFileProvider.forFiles(array).fromFileSystem().build());
+        def.setFieldProvider(PropertyFileProvider.forFiles(array).build());
         return Arrays.asList(def);
       }
     };

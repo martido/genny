@@ -15,6 +15,8 @@
  */
 package de.martido.genny.codegen;
 
+import static de.martido.genny.provider.PropertyFileProvider.forFile;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -22,7 +24,6 @@ import org.junit.runners.Parameterized;
 import de.martido.genny.Field;
 import de.martido.genny.FieldMapper;
 import de.martido.genny.GeneratorDefinition;
-import de.martido.genny.provider.PropertyFileProvider;
 
 /**
  * @author Martin Dobmeier
@@ -40,7 +41,7 @@ public class AlternativeFieldMapperTest extends AbstractTestCase {
     GeneratorDefinition def = new GeneratorDefinition();
     def.setTargetClass(this.templateEngine.getExtension() + ".Alternative_Field_Mapper");
     def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(PropertyFileProvider.forFile("test.1.properties").build());
+    def.setFieldProvider(forFile("src/test/resources/test.1.properties").build());
 
     // A prefix should be excluded from both field names and value.
     // Also, field names should be upper case.

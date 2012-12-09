@@ -15,6 +15,7 @@
  */
 package de.martido.genny.codegen;
 
+import static de.martido.genny.provider.PropertyFileProvider.forFile;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -40,7 +41,7 @@ public class AlternativeFieldFilterTest extends AbstractTestCase {
     GeneratorDefinition def = new GeneratorDefinition();
     def.setTargetClass(this.templateEngine.getExtension() + ".Alternative_Field_Filter");
     def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(PropertyFileProvider.forFile("test.1.properties").build());
+    def.setFieldProvider(forFile("src/test/resources/test.1.properties").build());
 
     // Exclude a property called 'property.the.uglzy'.
     def.setFieldFilter(new FieldFilter() {

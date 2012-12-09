@@ -38,24 +38,13 @@ import de.martido.genny.util.Logger;
 /**
  * A default {@link FieldProvider} that works with regular Java property files like
  * {@code java.util.Properties} and {@code java.util.PropertyResourceBundle}. Therefore, the name
- * and value of a provided {@link Field} will be the property's key.
- * <p>
- * The following defaults apply if not otherwise specified:
- * <ul>
- * <li>Files are loaded from the classpath.</li>
- * <li>Files are assumed to be UTF-8 encoded.</li>
- * </ul>
+ * and value of a provided {@link Field} will be the property's key. Filenames must be specified
+ * relative to the current working directory. If not otherwise specified, files are assumed to be
+ * UTF-8 encoded.
  * 
  * @author Martin Dobmeier
  */
 public class PropertyFileProvider implements FieldProvider {
-
-  /**
-   * Should resources be loaded from the classpath.
-   * <p>
-   * By default set to {@code true}.
-   */
-  private final boolean loadFromClasspath;
 
   /**
    * The property file's charset.
@@ -75,14 +64,11 @@ public class PropertyFileProvider implements FieldProvider {
     List<String> propertyFileNames = (List<String>) context.get("propertyFileNames");
     this.propertyFileNames = propertyFileNames;
 
-    Boolean loadFromClasspath = (Boolean) context.get("loadFromClasspath");
-    this.loadFromClasspath = loadFromClasspath != null ? loadFromClasspath : true;
-
     Charset charset = (Charset) context.get("charset");
     this.charset = charset != null ? charset : Charset.forName("UTF-8");
   }
 
-  public static AwaitingLoadBehaviour forFile(String propertyFileName) {
+  public static AwaitingCharSet forFile(String propertyFileName) {
     return forFiles(propertyFileName);
   }
 
@@ -90,16 +76,13 @@ public class PropertyFileProvider implements FieldProvider {
    * Specifies the list of property files from which to generate the class. The files will be loaded
    * in the order given, i.e. properties defined in files may overwrite previously defined
    * properties.
-   * 
-   * @param propertyFileNames
-   * @return
    */
-  public static AwaitingLoadBehaviour forFiles(String... propertyFileNames) {
+  public static AwaitingCharSet forFiles(String... propertyFileNames) {
     String[] copy = new String[propertyFileNames.length];
     System.arraycopy(propertyFileNames, 0, copy, 0, propertyFileNames.length);
     Map<String, Object> context = new HashMap<String, Object>();
     context.put("propertyFileNames", Arrays.asList(copy));
-    return new AwaitingLoadBehaviour(context);
+    return new AwaitingCharSet(context);
   }
 
   /**
@@ -115,27 +98,6 @@ public class PropertyFileProvider implements FieldProvider {
 
     public PropertyFileProvider build() {
       return new PropertyFileProvider(this.context);
-    }
-
-  }
-
-  /**
-   * @author Martin Dobmeier
-   */
-  public static class AwaitingLoadBehaviour extends AbstractIntermediaryResult {
-
-    private AwaitingLoadBehaviour(Map<String, Object> context) {
-      super(context);
-    }
-
-    public AwaitingCharSet fromClasspath() {
-      this.context.put("loadFromClasspath", true);
-      return new AwaitingCharSet(this.context);
-    }
-
-    public AwaitingCharSet fromFileSystem() {
-      this.context.put("loadFromClasspath", false);
-      return new AwaitingCharSet(this.context);
     }
 
   }
@@ -160,7 +122,7 @@ public class PropertyFileProvider implements FieldProvider {
 
     Properties all = new Properties();
     for (String fileName : this.propertyFileNames) {
-      Properties props = this.load(fileName, this.charset, this.loadFromClasspath);
+      Properties props = this.load(fileName, this.charset);
       all.putAll(props);
     }
 
@@ -186,8 +148,7 @@ public class PropertyFileProvider implements FieldProvider {
     return fields;
   }
 
-  private Properties load(String propertyFileName, Charset charset, boolean fromClasspath)
-      throws IOException {
+  private Properties load(String propertyFileName, Charset charset) throws IOException {
 
     if (Logger.get().isVerbose()) {
       System.out.println("Loading " + propertyFileName);
@@ -197,13 +158,8 @@ public class PropertyFileProvider implements FieldProvider {
 
     InputStreamReader reader = null;
     try {
-      if (fromClasspath) {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream(propertyFileName);
-        reader = new InputStreamReader(in, charset);
-      } else {
-        InputStream in = new FileInputStream(new File(propertyFileName));
-        reader = new InputStreamReader(in, charset);
-      }
+      InputStream in = new FileInputStream(new File(propertyFileName));
+      reader = new InputStreamReader(in, charset);
       props.load(reader);
     } finally {
       if (reader != null) {
@@ -218,7 +174,6 @@ public class PropertyFileProvider implements FieldProvider {
   public String toString() {
     return "PropertyFileProvider [" //
         + "propertyFileNames=" + this.propertyFileNames //
-        + ", loadFromClasspath=" + this.loadFromClasspath //
         + ", charset=" + this.charset + "]";
   }
 

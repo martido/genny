@@ -15,12 +15,13 @@
  */
 package de.martido.genny.codegen;
 
+import static de.martido.genny.provider.PropertyFileProvider.forFile;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import de.martido.genny.GeneratorDefinition;
-import de.martido.genny.provider.PropertyFileProvider;
 
 /**
  * @author Martin Dobmeier
@@ -38,9 +39,7 @@ public class ResourceBundleTest extends AbstractTestCase {
     GeneratorDefinition def = new GeneratorDefinition();
     def.setTargetClass(this.templateEngine.getExtension() + ".Resource_Bundle");
     def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(PropertyFileProvider
-        .forFile("MessageResources.properties")
-        .build());
+    def.setFieldProvider(forFile("src/test/resources/MessageResources.properties").build());
     this.generate(def);
 
     Object obj = this.getInstanceOfGeneratedClass(def);
