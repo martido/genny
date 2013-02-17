@@ -15,11 +15,7 @@
  */
 package de.martido.genny.example.config;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFile;
-
-import java.util.Arrays;
-import java.util.List;
-
+import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 import de.martido.genny.Field;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.FieldMapper;
@@ -30,12 +26,9 @@ import de.martido.genny.codegen.StringTemplateSourceFileGenerator;
 public class PropertiesConfiguration implements GennyConfiguration {
 
   @Override
-  public List<GeneratorDefinition> configure() {
+  public GeneratorDefinition configure(GeneratorDefinition def) {
 
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.Property");
-    def.setBaseDirectory("src/generated/java");
-    def.setFieldProvider(forFile("src/main/resources/example.properties").build());
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
 
     /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
     def.setFieldMapper(new FieldMapper() {
@@ -60,7 +53,7 @@ public class PropertiesConfiguration implements GennyConfiguration {
     /* A custom StringTemplate template. */
     def.setSourceFileGenerator(new StringTemplateSourceFileGenerator("customTemplate.stg"));
 
-    return Arrays.asList(def);
+    return def;
   }
 
 }

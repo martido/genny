@@ -15,44 +15,57 @@
  */
 package de.martido.genny.ant;
 
-import org.apache.tools.ant.BuildException;
+import junit.framework.Assert;
+
 import org.apache.tools.ant.types.FileSet;
 import org.junit.Test;
 
 public class GennyTaskTest {
 
-  @Test(expected = BuildException.class)
+  @Test
   public void should_not_validate1() {
     GennyTask task = new GennyTask();
-    task.validate();
+    Assert.assertFalse(task.isValid());
   }
 
-  @Test(expected = BuildException.class)
+  @Test
   public void should_not_validate2() {
     GennyTask task = new GennyTask();
     task.setTargetClass("com.example.TargetClass");
-    task.validate();
+    Assert.assertFalse(task.isValid());
   }
 
-  @Test(expected = BuildException.class)
+  @Test
   public void should_not_validate3() {
     GennyTask task = new GennyTask();
     task.setBaseDirectory("src/main/generated");
-    task.validate();
+    Assert.assertFalse(task.isValid());
   }
 
-  public void should_validate1() {
+  @Test
+  public void should_not_validate4() {
     GennyTask task = new GennyTask();
     task.setConfigurationClass("com.example.ConfigurationClass");
-    task.validate();
+    Assert.assertFalse(task.isValid());
   }
 
+  @Test
+  public void should_validate() {
+    GennyTask task = new GennyTask();
+    task.setTargetClass("com.example.TargetClass");
+    task.setBaseDirectory("src/main/generated");
+    task.addFileSet(new FileSet());
+    Assert.assertTrue(task.isValid());
+  }
+
+  @Test
   public void should_validate2() {
     GennyTask task = new GennyTask();
     task.setTargetClass("com.example.TargetClass");
     task.setBaseDirectory("src/main/generated");
     task.addFileSet(new FileSet());
-    task.validate();
+    task.setConfigurationClass("com.example.ConfigurationClass");
+    Assert.assertTrue(task.isValid());
   }
 
 }

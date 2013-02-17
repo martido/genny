@@ -38,18 +38,20 @@ public class Genny {
    * 
    * @param configuration
    *          The {@link GennyConfiguration}.
+   * @param def
+   *          The {@link GennyDefinition}.
    * @throws Exception
    *           If an error occurs.
    */
-  public void generateFrom(GennyConfiguration configuration) throws Exception {
+  public void generateFrom(GennyConfiguration configuration, GeneratorDefinition def)
+      throws Exception {
 
     try {
-      for (GeneratorDefinition def : configuration.configure()) {
-        if (Logger.get().isVerbose()) {
-          System.out.println(def.toString());
-        }
-        this.generate(def);
+      GeneratorDefinition newDef = configuration.configure(def);
+      if (Logger.get().isVerbose()) {
+        System.out.println(newDef.toString());
       }
+      this.generate(newDef);
     } finally {
       Logger.remove();
     }

@@ -16,7 +16,6 @@
 package de.martido.genny.ant;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
@@ -42,13 +41,10 @@ public class GennyTask extends Task {
   /** The base directory of {@link #targetClass}. */
   private String baseDirectory;
 
-  /** A list of property files from which to generate the {@link #targetClass}. */
+  /** A list of files from which to generate the {@link #targetClass}. */
   private final List<FileSet> fileSets = new ArrayList<FileSet>();
 
-  /**
-   * The fully qualified class name of a {@link GennyConfiguration}. Specifying a configuration
-   * class takes precedence over {@code #targetClass}, {@code #baseDirectory} and {@code #fileSets}.
-   */
+  /** An optioanl fully qualified class name of a custom {@link GennyConfiguration}. */
   private String configurationClass;
 
   /** Turns verbose logging on/off. */
@@ -77,22 +73,13 @@ public class GennyTask extends Task {
   /**
    * Visible for testing.
    */
-  protected void validate() {
-
-    boolean valid = true;
-
-    if (this.configurationClass == null) {
-
-      if (this.targetClass == null ||
-          this.baseDirectory == null ||
-          this.fileSets.isEmpty()) {
-        valid = false;
-      }
-    }
-
-    if (!valid) {
-      throw new BuildException("You must either provide the name of a configuration class " +
-          "or simply specify a 'targetClass', 'baseDirectory' and a set of source property files.");
+  protected boolean isValid() {
+    if (this.targetClass == null ||
+        this.baseDirectory == null ||
+        this.fileSets.isEmpty()) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -120,29 +107,16 @@ public class GennyTask extends Task {
   }
 
   /**
-   * Creates a {@link GennyConfiguration} using {@code #targetClass}, {@code #baseDirectory} and
-   * {@code #fileSets}.
+   * Creates a default {@link GennyConfiguration}.
    * 
    * @return A {@link GennyConfiguration}.
    */
   private GennyConfiguration createConfiguration() {
 
-    final List<String> fileNames = new ArrayList<String>();
-    for (FileSet fs : this.fileSets) {
-      DirectoryScanner ds = fs.getDirectoryScanner(this.getProject());
-      for (String fileName : ds.getIncludedFiles()) {
-        fileNames.add(fileName);
-      }
-    }
-
     return new GennyConfiguration() {
-      public List<GeneratorDefinition> configure() {
-        GeneratorDefinition def = new GeneratorDefinition();
-        def.setTargetClass(GennyTask.this.targetClass);
-        def.setBaseDirectory(GennyTask.this.baseDirectory);
-        def.setFieldProvider(PropertyFileProvider.forFiles(
-            fileNames.toArray(new String[fileNames.size()])).build());
-        return Arrays.asList(def);
+      public GeneratorDefinition configure(GeneratorDefinition def) {
+        def.setFieldProvider(PropertyFileProvider.forFiles(def.getInputFiles()).build());
+        return def;
       }
     };
   }
@@ -150,7 +124,20 @@ public class GennyTask extends Task {
   @Override
   public void execute() throws BuildException {
 
-    this.validate();
+    if (!this.isValid()) {
+      throw new BuildException(
+          "You have to specify the 'targetClass' and 'baseDirectory' attributes " +
+              "as well as a set of source files. If you need custom behaviour, " +
+              "implement a GennyConfiguration and add the 'configurationClass' attribute");
+    }
+
+    final List<String> inputFiles = new ArrayList<String>();
+    for (FileSet fs : this.fileSets) {
+      DirectoryScanner ds = fs.getDirectoryScanner(this.getProject());
+      for (String fileName : ds.getIncludedFiles()) {
+        inputFiles.add(fileName);
+      }
+    }
 
     GennyConfiguration conf;
     if (this.configurationClass != null) {
@@ -161,7 +148,9 @@ public class GennyTask extends Task {
     }
 
     try {
-      new Genny(this.verbose).generateFrom(conf);
+      GeneratorDefinition def = new GeneratorDefinition(
+          this.targetClass, this.baseDirectory, inputFiles);
+      new Genny(this.verbose).generateFrom(conf, def);
     } catch (Exception ex) {
       throw new BuildException(ex);
     }

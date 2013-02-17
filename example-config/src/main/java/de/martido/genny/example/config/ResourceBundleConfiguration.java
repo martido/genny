@@ -15,23 +15,16 @@
  */
 package de.martido.genny.example.config;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFile;
-
-import java.util.Arrays;
-import java.util.List;
-
+import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
 
 public class ResourceBundleConfiguration implements GennyConfiguration {
 
   @Override
-  public List<GeneratorDefinition> configure() {
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.I18N");
-    def.setBaseDirectory("src/generated/java");
-    def.setFieldProvider(forFile("src/main/resources/MessageResources.properties").build());
-    return Arrays.asList(def);
+  public GeneratorDefinition configure(GeneratorDefinition def) {
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
+    return def;
   }
 
 }

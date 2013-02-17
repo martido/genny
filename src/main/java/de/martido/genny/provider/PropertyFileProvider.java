@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -69,19 +68,16 @@ public class PropertyFileProvider implements FieldProvider {
   }
 
   public static AwaitingCharSet forFile(String propertyFileName) {
-    return forFiles(propertyFileName);
+    return forFiles(Collections.singletonList(propertyFileName));
   }
 
   /**
    * Specifies the list of property files from which to generate the class. The files will be loaded
-   * in the order given, i.e. properties defined in files may overwrite previously defined
-   * properties.
+   * in the order given by the collection's iterator.
    */
-  public static AwaitingCharSet forFiles(String... propertyFileNames) {
-    String[] copy = new String[propertyFileNames.length];
-    System.arraycopy(propertyFileNames, 0, copy, 0, propertyFileNames.length);
+  public static AwaitingCharSet forFiles(List<String> propertyFileNames) {
     Map<String, Object> context = new HashMap<String, Object>();
-    context.put("propertyFileNames", Arrays.asList(copy));
+    context.put("propertyFileNames", new ArrayList<String>(propertyFileNames));
     return new AwaitingCharSet(context);
   }
 

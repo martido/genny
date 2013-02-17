@@ -15,6 +15,9 @@
  */
 package de.martido.genny;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Defines a generator of a source file.
  * 
@@ -22,13 +25,16 @@ package de.martido.genny;
  */
 public class GeneratorDefinition {
 
-  /** The source file to generate. [mandatory] */
-  private String targetClass;
+  /** The source file to generate. */
+  private final String targetClass;
 
-  /** The base directory of the generated source file. [mandatory] */
-  private String baseDirectory;
+  /** The base directory of the generated source file. */
+  private final String baseDirectory;
 
-  /** The {@link FieldProvider} used for this generator. [mandatory] */
+  /** The names of the input files from which {@code targetClass} class shall be generated. */
+  private final List<String> inputFiles;
+
+  /** The {@link FieldProvider} used for this generator. */
   private FieldProvider fieldProvider;
 
   /** An optional {@link FieldMapper}. */
@@ -40,12 +46,26 @@ public class GeneratorDefinition {
   /** An optional {@link SourceFileGenerator}. */
   private SourceFileGenerator sourceFileGenerator;
 
+  public GeneratorDefinition(String targetClass, String baseDirectory, String inputFile) {
+    this(targetClass, baseDirectory, Collections.singletonList(inputFile));
+  }
+
+  public GeneratorDefinition(String targetClass, String baseDirectory, List<String> inputFiles) {
+    this.targetClass = targetClass;
+    this.baseDirectory = baseDirectory;
+    this.inputFiles = inputFiles;
+  }
+
   public String getTargetClass() {
     return this.targetClass;
   }
 
   public String getBaseDirectory() {
     return this.baseDirectory;
+  }
+
+  public List<String> getInputFiles() {
+    return Collections.unmodifiableList(this.inputFiles);
   }
 
   public FieldProvider getFieldProvider() {
@@ -62,14 +82,6 @@ public class GeneratorDefinition {
 
   public SourceFileGenerator getSourceFileGenerator() {
     return this.sourceFileGenerator;
-  }
-
-  public void setTargetClass(String targetClass) {
-    this.targetClass = targetClass;
-  }
-
-  public void setBaseDirectory(String baseDirectory) {
-    this.baseDirectory = baseDirectory;
   }
 
   public void setFieldProvider(FieldProvider fieldProvider) {
@@ -93,6 +105,7 @@ public class GeneratorDefinition {
     return "GeneratorDefinition [\n"
         + "\ttargetClass=" + this.targetClass + "\n"
         + "\tbaseDirectory=" + this.baseDirectory + "\n"
+        + "\tinputFiles=" + this.inputFiles + "\n"
         + "\tfieldProvider=" + this.fieldProvider + "\n"
         + "\tfieldMapper=" + this.fieldMapper + "\n"
         + "\tfieldFilter=" + this.fieldFilter + "\n"

@@ -15,7 +15,7 @@
  */
 package de.martido.genny.codegen;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFile;
+import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +36,10 @@ public class ResourceBundleTest extends AbstractTestCase {
   @Test
   public void should_generate_from_resource_bundle() {
 
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass(this.templateEngine.getExtension() + ".Resource_Bundle");
-    def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(forFile("src/test/resources/MessageResources.properties").build());
+    GeneratorDefinition def = new GeneratorDefinition(
+        this.templateEngine.getExtension() + ".Resource_Bundle",
+        BASE_DIRECTORY, "src/test/resources/MessageResources.properties");
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
     this.generate(def);
 
     Object obj = this.getInstanceOfGeneratedClass(def);

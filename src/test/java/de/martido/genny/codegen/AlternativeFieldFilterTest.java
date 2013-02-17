@@ -15,7 +15,8 @@
  */
 package de.martido.genny.codegen;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFile;
+import static de.martido.genny.provider.PropertyFileProvider.forFiles;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,7 +24,6 @@ import org.junit.runners.Parameterized;
 import de.martido.genny.Field;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.GeneratorDefinition;
-import de.martido.genny.provider.PropertyFileProvider;
 
 /**
  * @author Martin Dobmeier
@@ -38,10 +38,11 @@ public class AlternativeFieldFilterTest extends AbstractTestCase {
   @Test
   public void should_apply_alternative_field_filter() {
 
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass(this.templateEngine.getExtension() + ".Alternative_Field_Filter");
-    def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(forFile("src/test/resources/test.1.properties").build());
+    GeneratorDefinition def = new GeneratorDefinition(
+        this.templateEngine.getExtension() + ".Alternative_Field_Filter",
+        BASE_DIRECTORY,
+        "src/test/resources/test.1.properties");
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
 
     // Exclude a property called 'property.the.uglzy'.
     def.setFieldFilter(new FieldFilter() {
@@ -56,4 +57,5 @@ public class AlternativeFieldFilterTest extends AbstractTestCase {
     this.assertField(obj, "property_the_good", "property.the.good");
     this.assertField(obj, "property_the_bad", "property.the.bad");
   }
+
 }

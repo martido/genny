@@ -15,7 +15,7 @@
  */
 package de.martido.genny.codegen;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFile;
+import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,10 +38,11 @@ public class AlternativeFieldMapperTest extends AbstractTestCase {
   @Test
   public void should_apply_alternative_field_mapper() {
 
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass(this.templateEngine.getExtension() + ".Alternative_Field_Mapper");
-    def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(forFile("src/test/resources/test.1.properties").build());
+    GeneratorDefinition def = new GeneratorDefinition(
+        this.templateEngine.getExtension() + ".Alternative_Field_Mapper",
+        BASE_DIRECTORY,
+        "src/test/resources/test.1.properties");
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
 
     // A prefix should be excluded from both field names and value.
     // Also, field names should be upper case.

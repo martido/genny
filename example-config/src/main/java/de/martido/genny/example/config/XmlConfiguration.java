@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -40,12 +39,9 @@ import de.martido.genny.GennyConfiguration;
 public class XmlConfiguration implements GennyConfiguration {
 
   @Override
-  public List<GeneratorDefinition> configure() {
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.Xml");
-    def.setBaseDirectory("src/generated/java");
-    def.setFieldProvider(new XmlProvider("src/main/resources/example.xml"));
-    return Arrays.asList(def);
+  public GeneratorDefinition configure(GeneratorDefinition def) {
+    def.setFieldProvider(new XmlProvider(def.getInputFiles().get(0)));
+    return def;
   }
 
   /**

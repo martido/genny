@@ -57,6 +57,13 @@
 					<execution>
 						<id>example1</id>
 						<configuration>
+              <targetClass>de.martido.genny.example.Property</targetClass>
+              <baseDirectory>src/generated/java</baseDirectory>
+              <propertyFiles>
+                <includes>
+                  <include>src/main/resources/example.properties</include>
+                </includes>
+              </propertyFiles>
 							<configurationClass>de.martido.genny.example.config.PropertiesConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>
@@ -68,7 +75,14 @@
 					<execution>
 						<id>example2</id>
 						<configuration>
-							<configurationClass>de.martido.genny.example.config.ResourceBundleConfiguration</configurationClass>
+              <targetClass>de.martido.genny.example.I18N</targetClass>
+              <baseDirectory>src/generated/java</baseDirectory>
+              <propertyFiles>
+                <includes>
+                  <include>src/main/resources/MessageResources.properties</include>
+                </includes>
+              </propertyFiles>
+              <configurationClass>de.martido.genny.example.config.ResourceBundleConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>
 						<phase>generate-sources</phase>
@@ -79,6 +93,13 @@
 					<execution>
 						<id>example3</id>
 						<configuration>
+              <targetClass>de.martido.genny.example.Xml</targetClass>
+              <baseDirectory>src/generated/java</baseDirectory>
+              <propertyFiles>
+                <includes>
+                  <include>src/main/resources/example.xml</include>
+                </includes>
+              </propertyFiles>
 							<configurationClass>de.martido.genny.example.config.XmlConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>

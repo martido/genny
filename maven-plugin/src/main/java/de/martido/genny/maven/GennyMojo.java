@@ -1,8 +1,5 @@
 package de.martido.genny.maven;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -43,8 +40,7 @@ public class GennyMojo extends AbstractMojo {
   private FileSet propertyFiles;
 
   /**
-   * The fully qualified class name of a {@link GennyConfiguration}. Specifying a configuration
-   * class takes precedence over {@code #targetClass}, {@code #baseDirectory} and {@code #fileSets}.
+   * An optional fully qualified class name of a {@link GennyConfiguration}.
    * 
    * @parameter expression="${configurationClass}"
    */
@@ -60,28 +56,24 @@ public class GennyMojo extends AbstractMojo {
   /**
    * Visible for testing.
    */
-  protected boolean validate() {
-
-    boolean valid = true;
-
-    if (this.configurationClass == null) {
-
-      if (this.targetClass == null ||
-          this.baseDirectory == null ||
-          this.propertyFiles.getIncludes().isEmpty()) {
-        valid = false;
-      }
+  protected boolean isValid() {
+    if (this.targetClass == null ||
+        this.baseDirectory == null ||
+        this.propertyFiles.getIncludes().isEmpty()) {
+      return false;
+    } else {
+      return true;
     }
-
-    return valid;
   }
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
 
-    if (!this.validate()) {
-      throw new MojoExecutionException("You must provide the name of a configuration class "
-          + "or specify a 'targetClass', 'baseDirectory' and a set of source property files.");
+    if (!this.isValid()) {
+      throw new MojoExecutionException(
+          "You have to specify the 'targetClass' and 'baseDirectory' attributes " +
+              "as well as a set of source files. If you need custom behaviour, " +
+              "implement a GennyConfiguration and add the 'configurationClass' attribute");
     }
 
     GennyConfiguration conf;
@@ -93,11 +85,12 @@ public class GennyMojo extends AbstractMojo {
     }
 
     try {
-      new Genny(this.verbose).generateFrom(conf);
+      GeneratorDefinition def = new GeneratorDefinition(
+          this.targetClass, this.baseDirectory, this.propertyFiles.getIncludes());
+      new Genny(this.verbose).generateFrom(conf, def);
     } catch (Exception ex) {
       throw new MojoExecutionException("", ex);
     }
-
   }
 
   /**
@@ -125,34 +118,16 @@ public class GennyMojo extends AbstractMojo {
   }
 
   /**
-   * Creates a {@link GennyConfiguration} using {@code #targetClass}, {@code #baseDirectory} and
-   * {@code #fileSets}.
+   * Creates a default {@link GennyConfiguration}.
    * 
    * @return A {@link GennyConfiguration}.
    */
   private GennyConfiguration createConfiguration() {
 
-    final List<String> fileNames = this.propertyFiles.getIncludes();
-    final String[] array = fileNames.toArray(new String[fileNames.size()]);
-
     return new GennyConfiguration() {
-
-      @Override
-      public List<GeneratorDefinition> configure() {
-        GeneratorDefinition def = new GeneratorDefinition();
-        def.setTargetClass(GennyMojo.this.targetClass);
-        def.setBaseDirectory(GennyMojo.this.baseDirectory);
-
-        /**
-         * The plugin must be associated with a build phase that is executed prior to 'compile'. The
-         * preferred phase would be 'generate-sources'. However, the projects' resources won't be
-         * copied to the output directory until 'process-resources' and therefore won't be available
-         * to the plugin's classloader. So we could either use that phase together with a custom
-         * {@code ComponentConfigurer} or we could just load property files from the file system. We
-         * chose the latter.
-         */
-        def.setFieldProvider(PropertyFileProvider.forFiles(array).build());
-        return Arrays.asList(def);
+      public GeneratorDefinition configure(GeneratorDefinition def) {
+        def.setFieldProvider(PropertyFileProvider.forFiles(def.getInputFiles()).build());
+        return def;
       }
     };
   }

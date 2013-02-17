@@ -17,6 +17,8 @@ package de.martido.genny.codegen;
 
 import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -36,12 +38,13 @@ public class MultiplePropertyFilesTest extends AbstractTestCase {
   @Test
   public void should_generate_from_multiple_property_files() {
 
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass(this.templateEngine.getExtension() + ".Multiple_Property_Files");
-    def.setBaseDirectory(BASE_DIRECTORY);
-    def.setFieldProvider(forFiles(
-        "src/test/resources/test.1.properties",
-        "src/test/resources/test.2.properties").build());
+    GeneratorDefinition def = new GeneratorDefinition(
+        this.templateEngine.getExtension() + ".Multiple_Property_Files",
+        BASE_DIRECTORY,
+        Arrays.asList(
+            "src/test/resources/test.1.properties",
+            "src/test/resources/test.2.properties"));
+    def.setFieldProvider(forFiles(def.getInputFiles()).build());
     this.generate(def);
 
     Object obj = this.getInstanceOfGeneratedClass(def);
@@ -51,5 +54,4 @@ public class MultiplePropertyFilesTest extends AbstractTestCase {
     this.assertField(obj, "property_hero", "property.hero");
     this.assertField(obj, "property_villain", "property.villain");
   }
-
 }

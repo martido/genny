@@ -72,13 +72,14 @@ public abstract class AbstractTestCase {
     def.setSourceFileGenerator(this.templateEngine.getSourceFileGenerator(template));
 
     GennyConfiguration module = new GennyConfiguration() {
-      public List<GeneratorDefinition> configure() {
-        return Arrays.asList(def);
+      @Override
+      public GeneratorDefinition configure(GeneratorDefinition def) {
+        return def;
       }
     };
 
     try {
-      new Genny().generateFrom(module);
+      new Genny().generateFrom(module, def);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());

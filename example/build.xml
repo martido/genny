@@ -46,18 +46,35 @@
 
 	<taskdef name="genny" classname="de.martido.genny.ant.GennyTask" classpathref="project.classpath" />
 
-	<!-- Generates a class using no external configuration source file. -->	
+	<!-- Generates a class using the default configuration. -->	
 	<target name="exampleSimple" depends="clean, bootstrap">
 		<genny targetClass="de.martido.genny.example.I18N" baseDirectory="${dir.gen}" verbose="true">
 			<fileset file="${dir.res}/MessageResources.properties" />
 		</genny>
 	</target>
 
-	<!-- Generates classes using external configuration files. -->
+	<!-- Generates classes using custom configuration classes. -->
 	<target name="example" depends="clean, bootstrap">
-		<genny configurationClass="de.martido.genny.example.config.PropertiesConfiguration" verbose="true" />
-		<genny configurationClass="de.martido.genny.example.config.ResourceBundleConfiguration" verbose="true" />
-		<genny configurationClass="de.martido.genny.example.config.XmlConfiguration" verbose="true" />
+    <genny targetClass="de.martido.genny.example.Property"
+           baseDirectory="${dir.gen}"
+           configurationClass="de.martido.genny.example.config.PropertiesConfiguration"
+           verbose="true">
+      <fileset file="${dir.res}/example.properties" />
+    </genny>
+    
+    <genny targetClass="de.martido.genny.example.I18N" 
+           baseDirectory="${dir.gen}"
+           configurationClass="de.martido.genny.example.config.ResourceBundleConfiguration"
+           verbose="true">
+      <fileset file="${dir.res}/MessageResources.properties" />
+    </genny>  
+    
+    <genny targetClass="de.martido.genny.example.Xml"
+           baseDirectory="${dir.gen}"
+           configurationClass="de.martido.genny.example.config.XmlConfiguration"
+           verbose="true">
+      <fileset file="${dir.res}/example.xml" />
+    </genny>
 	</target>
 	
 </project>
