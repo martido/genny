@@ -29,22 +29,14 @@ task createWrapper(type: Wrapper) {
 }
 
 task testPrepare {
-  description = ""
-} << {
-  dir = new File("src/test/generated")
-  if(dir.exists()) {
-    dir.eachDir {
-      println "Deleting directory '${it.path}'"
-      delete(it)
+  doLast {
+    def dir = new File("src/test/generated")
+    if(!dir.exists()) {
+      dir.mkdirs()
+    } else {
+      dir.eachDir { delete(it) }
     }
   }
-  else {
-    dir.mkdirs()
-  }
-}
-
-test {
-  dependsOn testPrepare
 }
 
 task sourcesJar(type: Jar, dependsOn:classes) { 
@@ -53,19 +45,13 @@ task sourcesJar(type: Jar, dependsOn:classes) {
   from sourceSets.main.allSource 
 }
 
-task release(dependsOn: build) {
-  description = "Releases the library."
-} << { 
-  println "Releasing ..."
-}
-
 // Add the sources JAR artifact to the archives configuration.
 artifacts {
   archives sourcesJar
 }
 
-// Configure the Maven 'install' task: Don't add the 'compile' configuration to the generated POM.
-// (Taken from the Gradle docs) 
+// Configure the Maven 'install' task
+// Don't add the 'compile' configuration to the generated POM (see Gradle docs) 
 install {
   repositories {
     mavenInstaller {
@@ -74,6 +60,6 @@ install {
   }
 }
 
-eclipseClasspath {
-  dependsOn cleanEclipseClasspath
-}
+eclipseClasspath.dependsOn cleanEclipseClasspath
+test.dependsOn testPrepare
+install.dependsOn sourcesJar
