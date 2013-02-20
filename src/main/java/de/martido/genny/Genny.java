@@ -30,7 +30,7 @@ public class Genny {
   }
 
   public Genny(boolean verbose) {
-    Logger.set(new Logger(verbose));
+    Logger.setVerbose(verbose);
   }
 
   /**
@@ -46,15 +46,11 @@ public class Genny {
   public void generateFrom(GennyConfiguration configuration, GeneratorDefinition def)
       throws Exception {
 
-    try {
-      GeneratorDefinition newDef = configuration.configure(def);
-      if (Logger.get().isVerbose()) {
-        System.out.println(newDef.toString());
-      }
-      this.generate(newDef);
-    } finally {
-      Logger.remove();
+    GeneratorDefinition newDef = configuration.configure(def);
+    if (Logger.isVerbose()) {
+      System.out.println(newDef.toString());
     }
+    this.generate(newDef);
   }
 
   private void generate(GeneratorDefinition def) throws Exception {

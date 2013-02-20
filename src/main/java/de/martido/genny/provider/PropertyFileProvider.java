@@ -135,7 +135,7 @@ public class PropertyFileProvider implements FieldProvider {
       }
     }
 
-    if (Logger.get().isVerbose()) {
+    if (Logger.isVerbose()) {
       for (Field field : fields) {
         System.out.println("Generated field: " + field);
       }
@@ -146,7 +146,7 @@ public class PropertyFileProvider implements FieldProvider {
 
   private Properties load(String propertyFileName, Charset charset) throws IOException {
 
-    if (Logger.get().isVerbose()) {
+    if (Logger.isVerbose()) {
       System.out.println("Loading " + propertyFileName);
     }
 

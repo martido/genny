@@ -22,28 +22,14 @@ package de.martido.genny.util;
  */
 public class Logger {
 
-  private static final ThreadLocal<Logger> threadLocal = new ThreadLocal<Logger>();
+  private static boolean verbose;
 
-  public static void set(Logger logger) {
-    threadLocal.set(logger);
+  public static void setVerbose(boolean value) {
+    verbose = value;
   }
 
-  public static Logger get() {
-    return threadLocal.get();
-  }
-
-  public static void remove() {
-    threadLocal.remove();
-  }
-
-  private final boolean verbose;
-
-  public Logger(boolean verbose) {
-    this.verbose = verbose;
-  }
-
-  public boolean isVerbose() {
-    return this.verbose;
+  public static boolean isVerbose() {
+    return verbose;
   }
 
 }
