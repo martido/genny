@@ -59,11 +59,11 @@
 						<configuration>
               <targetClass>de.martido.genny.example.Property</targetClass>
               <baseDirectory>src/generated/java</baseDirectory>
-              <propertyFiles>
+              <inputFiles>
                 <includes>
                   <include>src/main/resources/example.properties</include>
                 </includes>
-              </propertyFiles>
+              </inputFiles>
 							<configurationClass>de.martido.genny.example.config.PropertiesConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>
@@ -77,11 +77,11 @@
 						<configuration>
               <targetClass>de.martido.genny.example.I18N</targetClass>
               <baseDirectory>src/generated/java</baseDirectory>
-              <propertyFiles>
+              <inputFiles>
                 <includes>
                   <include>src/main/resources/MessageResources.properties</include>
                 </includes>
-              </propertyFiles>
+              </inputFiles>
               <configurationClass>de.martido.genny.example.config.ResourceBundleConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>
@@ -95,11 +95,11 @@
 						<configuration>
               <targetClass>de.martido.genny.example.Xml</targetClass>
               <baseDirectory>src/generated/java</baseDirectory>
-              <propertyFiles>
+              <inputFiles>
                 <includes>
                   <include>src/main/resources/example.xml</include>
                 </includes>
-              </propertyFiles>
+              </inputFiles>
 							<configurationClass>de.martido.genny.example.config.XmlConfiguration</configurationClass>
 							<verbose>true</verbose>
 						</configuration>
@@ -114,11 +114,11 @@
 							<targetClass>de.martido.genny.example.I18N</targetClass>
 							<baseDirectory>src/generated/java</baseDirectory>
 							<verbose>true</verbose>
-							<propertyFiles>
+							<inputFiles>
 								<includes>
 									<include>src/main/resources/MessageResources.properties</include>
 								</includes>
-							</propertyFiles>
+							</inputFiles>
 						</configuration>
 						<phase>generate-sources</phase>
 						<goals>

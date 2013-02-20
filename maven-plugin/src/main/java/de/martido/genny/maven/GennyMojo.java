@@ -35,9 +35,9 @@ public class GennyMojo extends AbstractMojo {
   /**
    * A list of property files from which to generate the {@link #targetClass}.
    * 
-   * @parameter expression="${propertyFiles}"
+   * @parameter expression="${inputFiles}"
    */
-  private FileSet propertyFiles;
+  private FileSet inputFiles;
 
   /**
    * An optional fully qualified class name of a {@link GennyConfiguration}.
@@ -59,7 +59,7 @@ public class GennyMojo extends AbstractMojo {
   protected boolean isValid() {
     if (this.targetClass == null ||
         this.baseDirectory == null ||
-        this.propertyFiles.getIncludes().isEmpty()) {
+        this.inputFiles.getIncludes().isEmpty()) {
       return false;
     } else {
       return true;
@@ -86,7 +86,7 @@ public class GennyMojo extends AbstractMojo {
 
     try {
       GeneratorDefinition def = new GeneratorDefinition(
-          this.targetClass, this.baseDirectory, this.propertyFiles.getIncludes());
+          this.targetClass, this.baseDirectory, this.inputFiles.getIncludes());
       new Genny(this.verbose).generateFrom(conf, def);
     } catch (Exception ex) {
       throw new MojoExecutionException("", ex);
