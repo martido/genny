@@ -55,24 +55,18 @@
 
 	<!-- Generates classes using custom configuration classes. -->
 	<target name="example" depends="clean, bootstrap">
-    <genny targetClass="de.martido.genny.example.Property"
-           baseDirectory="${dir.gen}"
-           configurationClass="de.martido.genny.example.config.PropertiesConfiguration"
-           verbose="true">
+    <genny targetClass="de.martido.genny.example.Property" baseDirectory="${dir.gen}" verbose="true"
+           configurationClass="de.martido.genny.example.config.PropertiesConfiguration">
       <fileset file="${dir.res}/example.properties" />
     </genny>
     
-    <genny targetClass="de.martido.genny.example.I18N" 
-           baseDirectory="${dir.gen}"
-           configurationClass="de.martido.genny.example.config.ResourceBundleConfiguration"
-           verbose="true">
+    <genny targetClass="de.martido.genny.example.I18N" baseDirectory="${dir.gen}" verbose="true"
+           configurationClass="de.martido.genny.example.config.ResourceBundleConfiguration">
       <fileset file="${dir.res}/MessageResources.properties" />
     </genny>  
     
-    <genny targetClass="de.martido.genny.example.Xml"
-           baseDirectory="${dir.gen}"
-           configurationClass="de.martido.genny.example.config.XmlConfiguration"
-           verbose="true">
+    <genny targetClass="de.martido.genny.example.Xml" baseDirectory="${dir.gen}" verbose="true"
+           configurationClass="de.martido.genny.example.config.XmlConfiguration">
       <fileset file="${dir.res}/example.xml" />
     </genny>
 	</target>
