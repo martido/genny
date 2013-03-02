@@ -5,8 +5,8 @@
 bin/
 build/
 src/test/generated
-example/lib/*.jar
-example/src/generated/java/
-example/target/
-example-config/target
-maven-plugin/target/
+projects/example/lib/*.jar
+projects/example/src/generated/java/de
+projects/example/target/
+projects/example-config/target
+projects/maven-plugin/target/
