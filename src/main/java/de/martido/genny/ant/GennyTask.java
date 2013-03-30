@@ -15,6 +15,7 @@
  */
 package de.martido.genny.ant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,8 +135,10 @@ public class GennyTask extends Task {
     final List<String> inputFiles = new ArrayList<String>();
     for (FileSet fs : this.fileSets) {
       DirectoryScanner ds = fs.getDirectoryScanner(this.getProject());
-      for (String fileName : ds.getIncludedFiles()) {
-        inputFiles.add(fileName);
+      for (String filename : ds.getIncludedFiles()) {
+        File baseDir  = ds.getBasedir();             
+        File file = new File(baseDir, filename);
+        inputFiles.add(file.getAbsolutePath());
       }
     }
 
