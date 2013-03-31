@@ -15,7 +15,6 @@
  */
 package de.martido.genny;
 
-import de.martido.genny.codegen.SimpleSourceFileGenerator;
 import de.martido.genny.util.Logger;
 
 /**
@@ -50,35 +49,13 @@ public class Genny {
     if (Logger.isVerbose()) {
       System.out.println(newDef.toString());
     }
-    this.generate(newDef);
-  }
 
-  private void generate(GeneratorDefinition def) throws Exception {
-
-    SourceFile sourceFile = this.createSourceFile(def);
-    FieldProvider fieldProvider = def.getFieldProvider();
-    FieldMapper fieldMapper = this.createFieldMapper(def);
-    FieldFilter fieldFilter = this.createFieldFilter(def);
-    SourceFileGenerator sourceFileGenerator = this.createSourceFileGenerator(def);
+    SourceFile sourceFile = newDef.getSourceFile();
+    FieldProvider fieldProvider = newDef.getFieldProvider();
+    FieldMapper fieldMapper = newDef.getFieldMapper();
+    FieldFilter fieldFilter = newDef.getFieldFilter();
+    SourceFileGenerator sourceFileGenerator = newDef.getSourceFileGenerator();
     sourceFileGenerator.generate(sourceFile, fieldProvider, fieldMapper, fieldFilter);
-  }
-
-  private SourceFile createSourceFile(GeneratorDefinition def) {
-    return new SourceFile(def.getTargetClass(), def.getBaseDirectory());
-  }
-
-  private FieldMapper createFieldMapper(GeneratorDefinition def) {
-    return def.getFieldMapper() == null ? FieldMapper.DEFAULT : def.getFieldMapper();
-  }
-
-  private FieldFilter createFieldFilter(GeneratorDefinition def) {
-    return def.getFieldFilter() == null ? FieldFilter.INCLUDE_ALL : def.getFieldFilter();
-  }
-
-  private SourceFileGenerator createSourceFileGenerator(GeneratorDefinition def) {
-    return def.getSourceFileGenerator() == null
-        ? new SimpleSourceFileGenerator()
-        : def.getSourceFileGenerator();
   }
 
 }

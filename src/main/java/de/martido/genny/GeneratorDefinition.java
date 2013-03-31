@@ -18,6 +18,8 @@ package de.martido.genny;
 import java.util.Collections;
 import java.util.List;
 
+import de.martido.genny.codegen.SimpleSourceFileGenerator;
+
 /**
  * Defines a generator of a source file.
  * 
@@ -64,6 +66,10 @@ public class GeneratorDefinition {
     return this.baseDirectory;
   }
 
+  public SourceFile getSourceFile() {
+    return new SourceFile(this.targetClass, this.baseDirectory);
+  }
+
   public List<String> getInputFiles() {
     return Collections.unmodifiableList(this.inputFiles);
   }
@@ -73,15 +79,17 @@ public class GeneratorDefinition {
   }
 
   public FieldMapper getFieldMapper() {
-    return this.fieldMapper;
+    return this.fieldMapper == null ? FieldMapper.DEFAULT : this.fieldMapper;
   }
 
   public FieldFilter getFieldFilter() {
-    return this.fieldFilter;
+    return this.fieldFilter == null ? FieldFilter.INCLUDE_ALL : this.fieldFilter;
   }
 
   public SourceFileGenerator getSourceFileGenerator() {
-    return this.sourceFileGenerator;
+    return this.sourceFileGenerator == null
+        ? new SimpleSourceFileGenerator()
+        : this.sourceFileGenerator;
   }
 
   public void setFieldProvider(FieldProvider fieldProvider) {
