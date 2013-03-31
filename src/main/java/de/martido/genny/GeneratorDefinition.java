@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.martido.genny.codegen.SimpleSourceFileGenerator;
+import de.martido.genny.provider.PropertyFileProvider;
 
 /**
  * Defines a generator of a source file.
@@ -75,7 +76,9 @@ public class GeneratorDefinition {
   }
 
   public FieldProvider getFieldProvider() {
-    return this.fieldProvider;
+    return this.fieldProvider == null
+        ? PropertyFileProvider.forFiles(this.inputFiles).build()
+        : this.fieldProvider;
   }
 
   public FieldMapper getFieldMapper() {

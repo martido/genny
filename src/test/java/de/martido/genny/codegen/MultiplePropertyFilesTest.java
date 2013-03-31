@@ -15,8 +15,6 @@
  */
 package de.martido.genny.codegen;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFiles;
-
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -44,7 +42,6 @@ public class MultiplePropertyFilesTest extends AbstractTestCase {
         Arrays.asList(
             "src/test/resources/test.1.properties",
             "src/test/resources/test.2.properties"));
-    def.setFieldProvider(forFiles(def.getInputFiles()).build());
     this.generate(def);
 
     Object obj = this.getInstanceOfGeneratedClass(def);

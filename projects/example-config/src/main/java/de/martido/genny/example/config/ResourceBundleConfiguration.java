@@ -15,7 +15,6 @@
  */
 package de.martido.genny.example.config;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
 
@@ -23,7 +22,6 @@ public class ResourceBundleConfiguration implements GennyConfiguration {
 
   @Override
   public GeneratorDefinition configure(GeneratorDefinition def) {
-    def.setFieldProvider(forFiles(def.getInputFiles()).build());
     return def;
   }
 

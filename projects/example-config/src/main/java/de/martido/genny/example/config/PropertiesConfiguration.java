@@ -15,7 +15,6 @@
  */
 package de.martido.genny.example.config;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFiles;
 import de.martido.genny.Field;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.FieldMapper;
@@ -27,8 +26,6 @@ public class PropertiesConfiguration implements GennyConfiguration {
 
   @Override
   public GeneratorDefinition configure(GeneratorDefinition def) {
-
-    def.setFieldProvider(forFiles(def.getInputFiles()).build());
 
     /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
     def.setFieldMapper(new FieldMapper() {

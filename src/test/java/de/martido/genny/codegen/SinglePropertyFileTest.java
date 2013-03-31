@@ -15,8 +15,6 @@
  */
 package de.martido.genny.codegen;
 
-import static de.martido.genny.provider.PropertyFileProvider.forFiles;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -40,7 +38,6 @@ public class SinglePropertyFileTest extends AbstractTestCase {
         this.templateEngine.getExtension() + ".Single_Property_File",
         BASE_DIRECTORY,
         "src/test/resources/test.1.properties");
-    def.setFieldProvider(forFiles(def.getInputFiles()).build());
     this.generate(def);
 
     Object obj = this.getInstanceOfGeneratedClass(def);
