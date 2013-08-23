@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="genny_example">
+<project name="genny-example">
 
 	<property name="dir.build" value="target/ant" />
 	<property name="dir.build.classes" value="target/ant/classes" />
