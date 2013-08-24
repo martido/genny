@@ -28,9 +28,9 @@ Genny provides several ways to customize the generated class:
 * Fields may be transformed using a `FieldMapper`. In the example above all dots have been replaced 
   with underscores to transform field names to valid Java identifiers.
 * Fields may be filtered using a `FieldFilter`, e.g. you could exlude certain fields.
-* Genny relies on an external template engine to generate source files. Currently there are 
-  `SourceFileGenerator`s based on StringTemplate and Apache Velocity. The default templates generate 
-  code as seen above, but you can also provide your own template. 
+* Genny uses simple string concatenation to generate source files (see the code above). However, you
+  could also plugin a real template engine. Currently there are `SourceFileGenerator`s based on 
+  StringTemplate and Apache Velocity. 
 
 For some examples of how to use Genny have a look at the [example][1] project.
 
