@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.martido.genny.example.generator;
+package de.martido.genny.example;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,15 +28,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import de.martido.genny.api.Field;
-import de.martido.genny.api.FieldFilter;
-import de.martido.genny.api.FieldProvider;
-import de.martido.genny.api.Generator;
-import de.martido.genny.api.GeneratorDefinition;
-import de.martido.genny.api.GennyConfiguration;
+import de.martido.genny.Field;
+import de.martido.genny.FieldFilter;
+import de.martido.genny.FieldProvider;
+import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.Genny;
+import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
 
 /**
  * Properties are read from a Derby database. This is a somewhat stupid example that's probably
@@ -49,19 +50,23 @@ public class DbConfiguration implements GennyConfiguration {
     try {
       List<String> statements = DbUtil.readSQLScript("src/main/resources/example.sql");
       DbUtil.execute(statements);
-      new Generator().generateFrom(new DbConfiguration());
+      new Genny().generateFrom(
+          new DbConfiguration(),
+          Collections.<String> emptyList(),
+          new SourceFile("de.martido.genny.example.Db", "src/generated/java"));
     } finally {
       DbUtil.shutdown();
     }
   }
 
   @Override
-  public List<GeneratorDefinition> configure() {
-    GeneratorDefinition def = new GeneratorDefinition();
-    def.setTargetClass("de.martido.genny.example.generated.DbConfiguration");
-    def.setBaseDirectory("src/generated/java");
-    def.setFieldProvider(new DbProvider());
-    return Arrays.asList(def);
+  public GeneratorDefinition configure(List<String> inputFiles) {
+    return new GeneratorDefinition(inputFiles) {
+      @Override
+      public FieldProvider getFieldProvider() {
+        return new DbProvider();
+      }
+    };
   }
 
   /**
