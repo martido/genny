@@ -34,4 +34,4 @@ Genny provides several ways to customize the generated class:
 
 For some examples of how to use Genny have a look at the [example][1] project.
 
-[1]: https://github.com/martido/genny/tree/master/example
+[1]: https://github.com/martido/genny/tree/master/projects/example
