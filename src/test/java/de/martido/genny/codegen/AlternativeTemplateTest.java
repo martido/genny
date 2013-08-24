@@ -15,11 +15,17 @@
  */
 package de.martido.genny.codegen;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
+import de.martido.genny.SourceFileGenerator;
 
 /**
  * @author Martin Dobmeier
@@ -34,11 +40,24 @@ public class AlternativeTemplateTest extends AbstractTestCase {
   @Test
   public void should_apply_alternative_template() {
 
-    GeneratorDefinition def = new GeneratorDefinition(
-        this.templateEngine.getExtension() + ".Alternative_Template",
-        BASE_DIRECTORY,
-        "src/test/resources/test.1.properties");
-    this.generate(def, "alternativeTemplate");
+    GennyConfiguration conf = new GennyConfiguration() {
+
+      @Override
+      public GeneratorDefinition configure(List<String> inputFiles) {
+        return new GeneratorDefinition(inputFiles) {
+
+          @Override
+          public SourceFileGenerator getSourceFileGenerator() {
+            return AlternativeTemplateTest.this.templateEngine
+                .getSourceFileGenerator("alternativeTemplate");
+          }
+        };
+      }
+    };
+
+    List<String> inputFiles = Arrays.asList("src/test/resources/test.1.properties");
+    SourceFile targetClass = this.createSourceFile("Alternative_Template");
+    this.generate(conf, inputFiles, targetClass);
   }
 
 }

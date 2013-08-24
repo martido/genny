@@ -39,9 +39,14 @@ import de.martido.genny.GennyConfiguration;
 public class XmlConfiguration implements GennyConfiguration {
 
   @Override
-  public GeneratorDefinition configure(GeneratorDefinition def) {
-    def.setFieldProvider(new XmlProvider(def.getInputFiles().get(0)));
-    return def;
+  public GeneratorDefinition configure(List<String> inputFiles) {
+    return new GeneratorDefinition(inputFiles) {
+
+      @Override
+      public FieldProvider getFieldProvider() {
+        return new XmlProvider(this.getInputFiles().get(0));
+      }
+    };
   }
 
   /**

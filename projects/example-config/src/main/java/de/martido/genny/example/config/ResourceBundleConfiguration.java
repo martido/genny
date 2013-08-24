@@ -15,14 +15,16 @@
  */
 package de.martido.genny.example.config;
 
+import java.util.List;
+
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
 
 public class ResourceBundleConfiguration implements GennyConfiguration {
 
   @Override
-  public GeneratorDefinition configure(GeneratorDefinition def) {
-    return def;
+  public GeneratorDefinition configure(List<String> inputFiles) {
+    return new GeneratorDefinition(inputFiles);
   }
 
 }

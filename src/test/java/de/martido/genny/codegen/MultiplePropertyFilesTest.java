@@ -16,12 +16,16 @@
 package de.martido.genny.codegen;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
+import de.martido.genny.SourceFileGenerator;
 
 /**
  * @author Martin Dobmeier
@@ -36,19 +40,31 @@ public class MultiplePropertyFilesTest extends AbstractTestCase {
   @Test
   public void should_generate_from_multiple_property_files() {
 
-    GeneratorDefinition def = new GeneratorDefinition(
-        this.templateEngine.getExtension() + ".Multiple_Property_Files",
-        BASE_DIRECTORY,
-        Arrays.asList(
-            "src/test/resources/test.1.properties",
-            "src/test/resources/test.2.properties"));
-    this.generate(def);
+    GennyConfiguration conf = new GennyConfiguration() {
 
-    Object obj = this.getInstanceOfGeneratedClass(def);
+      @Override
+      public GeneratorDefinition configure(List<String> inputFiles) {
+        return new GeneratorDefinition(inputFiles) {
+
+          @Override
+          public SourceFileGenerator getSourceFileGenerator() {
+            return MultiplePropertyFilesTest.this.templateEngine.getSourceFileGenerator(null);
+          }
+        };
+      }
+    };
+
+    List<String> inputFiles = Arrays.asList(
+        "src/test/resources/test.1.properties",
+        "src/test/resources/test.2.properties");
+    SourceFile targetClass = this.createSourceFile("Multiple_Property_Files");
+    this.generate(conf, inputFiles, targetClass);
+    Object obj = this.getInstanceOfGeneratedClass(targetClass);
     this.assertField(obj, "property_the_good", "property.the.good");
     this.assertField(obj, "property_the_bad", "property.the.bad");
     this.assertField(obj, "property_the_ugly", "property.the.ugly");
     this.assertField(obj, "property_hero", "property.hero");
     this.assertField(obj, "property_villain", "property.villain");
   }
+
 }

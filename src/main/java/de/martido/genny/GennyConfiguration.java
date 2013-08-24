@@ -15,6 +15,7 @@
  */
 package de.martido.genny;
 
+import java.util.List;
 
 /**
  * Configuration for the generation of source files.
@@ -24,8 +25,10 @@ package de.martido.genny;
 public interface GennyConfiguration {
 
   /**
+   * @param inputFiles
+   *          The paths to the input files from which the target class shall be generated.
    * @return A {@link GeneratorDefinition}.
    */
-  GeneratorDefinition configure(GeneratorDefinition def);
+  GeneratorDefinition configure(List<String> inputFiles);
 
 }

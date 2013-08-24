@@ -36,9 +36,9 @@ import javax.tools.ToolProvider;
 import org.junit.Assert;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.Genny;
 import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
 
 /**
  * @author Martin Dobmeier
@@ -63,23 +63,14 @@ public abstract class AbstractTestCase {
     return data;
   }
 
-  protected void generate(GeneratorDefinition def) {
-    this.generate(def, null);
+  protected SourceFile createSourceFile(String targetClass) {
+    return new SourceFile(this.templateEngine.getExtension() + "." + targetClass, BASE_DIRECTORY);
   }
 
-  protected void generate(final GeneratorDefinition def, String template) {
-
-    def.setSourceFileGenerator(this.templateEngine.getSourceFileGenerator(template));
-
-    GennyConfiguration module = new GennyConfiguration() {
-      @Override
-      public GeneratorDefinition configure(GeneratorDefinition def) {
-        return def;
-      }
-    };
+  protected void generate(GennyConfiguration conf, List<String> inputFiles, SourceFile targetClass) {
 
     try {
-      new Genny().generateFrom(module, def);
+      new Genny().generateFrom(conf, inputFiles, targetClass);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());
@@ -120,9 +111,11 @@ public abstract class AbstractTestCase {
    *          The {@code GeneratorDefinition}.
    * @return An {@code Object}.
    */
-  protected Object getInstanceOfGeneratedClass(GeneratorDefinition def) {
+  protected Object getInstanceOfGeneratedClass(SourceFile targetClass) {
     try {
-      Class<?> clazz = this.compileGeneratedClass(BASE_DIRECTORY, def.getTargetClass());
+      Class<?> clazz = this.compileGeneratedClass(
+          targetClass.getBaseDirectory(),
+          targetClass.getFullyQualifiedName());
       Constructor<?> constructor = clazz.getConstructor();
       return constructor.newInstance();
     } catch (Exception ex) {

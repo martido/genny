@@ -22,105 +22,62 @@ import de.martido.genny.codegen.SimpleSourceFileGenerator;
 import de.martido.genny.provider.PropertyFileProvider;
 
 /**
- * Defines a generator of a source file.
+ * Defines the generator of a source file.
  * 
  * @author Martin Dobmeier
  */
 public class GeneratorDefinition {
 
-  /** The source file to generate. */
-  private final String targetClass;
-
-  /** The base directory of the generated source file. */
-  private final String baseDirectory;
-
-  /** The names of the input files from which {@code targetClass} class shall be generated. */
   private final List<String> inputFiles;
 
-  /** The {@link FieldProvider} used for this generator. */
-  private FieldProvider fieldProvider;
-
-  /** An optional {@link FieldMapper}. */
-  private FieldMapper fieldMapper;
-
-  /** An optional {@link FieldFilter}. */
-  private FieldFilter fieldFilter;
-
-  /** An optional {@link SourceFileGenerator}. */
-  private SourceFileGenerator sourceFileGenerator;
-
-  public GeneratorDefinition(String targetClass, String baseDirectory, String inputFile) {
-    this(targetClass, baseDirectory, Collections.singletonList(inputFile));
-  }
-
-  public GeneratorDefinition(String targetClass, String baseDirectory, List<String> inputFiles) {
-    this.targetClass = targetClass;
-    this.baseDirectory = baseDirectory;
+  public GeneratorDefinition(List<String> inputFiles) {
     this.inputFiles = inputFiles;
   }
 
-  public String getTargetClass() {
-    return this.targetClass;
-  }
-
-  public String getBaseDirectory() {
-    return this.baseDirectory;
-  }
-
-  public SourceFile getSourceFile() {
-    return new SourceFile(this.targetClass, this.baseDirectory);
-  }
-
+  /**
+   * @return An unmodifiable list of the paths to the input files from which the target class shall
+   *         be generated.
+   */
   public List<String> getInputFiles() {
     return Collections.unmodifiableList(this.inputFiles);
   }
 
+  /**
+   * @return The {@link FieldProvider} used for this generator.
+   */
   public FieldProvider getFieldProvider() {
-    return this.fieldProvider == null
-        ? PropertyFileProvider.forFiles(this.inputFiles).build()
-        : this.fieldProvider;
+    return PropertyFileProvider.forFiles(this.getInputFiles()).build();
   }
 
+  /**
+   * @return The {@link FieldMapper}. Defaults to {@link FieldMapper#DEFAULT}.
+   */
   public FieldMapper getFieldMapper() {
-    return this.fieldMapper == null ? FieldMapper.DEFAULT : this.fieldMapper;
+    return FieldMapper.DEFAULT;
   }
 
+  /**
+   * @return The {@link FieldFilter}. Defaults to {@link FieldFilter#INCLUDE_ALL}
+   */
   public FieldFilter getFieldFilter() {
-    return this.fieldFilter == null ? FieldFilter.INCLUDE_ALL : this.fieldFilter;
+    return FieldFilter.INCLUDE_ALL;
   }
 
+  /**
+   * @return The {@link SourceFileGenerator}.
+   */
   public SourceFileGenerator getSourceFileGenerator() {
-    return this.sourceFileGenerator == null
-        ? new SimpleSourceFileGenerator()
-        : this.sourceFileGenerator;
-  }
-
-  public void setFieldProvider(FieldProvider fieldProvider) {
-    this.fieldProvider = fieldProvider;
-  }
-
-  public void setFieldMapper(FieldMapper fieldMapper) {
-    this.fieldMapper = fieldMapper;
-  }
-
-  public void setFieldFilter(FieldFilter fieldFilter) {
-    this.fieldFilter = fieldFilter;
-  }
-
-  public void setSourceFileGenerator(SourceFileGenerator sourceFileGenerator) {
-    this.sourceFileGenerator = sourceFileGenerator;
+    return new SimpleSourceFileGenerator();
   }
 
   @Override
   public String toString() {
     return "GeneratorDefinition [\n"
-        + "\ttargetClass=" + this.targetClass + "\n"
-        + "\tbaseDirectory=" + this.baseDirectory + "\n"
-        + "\tinputFiles=" + this.inputFiles + "\n"
-        + "\tfieldProvider=" + this.fieldProvider + "\n"
-        + "\tfieldMapper=" + this.fieldMapper + "\n"
-        + "\tfieldFilter=" + this.fieldFilter + "\n"
-        + "\tsourceFileGenerator=" + this.sourceFileGenerator + "]";
+        + "\tinputFiles=" + this.getInputFiles() + "\n"
+        + "\tfieldProvider=" + this.getFieldProvider() + "\n"
+        + "\tfieldMapper=" + this.getFieldMapper() + "\n"
+        + "\tfieldFilter=" + this.getFieldFilter() + "\n"
+        + "\tsourceFileGenerator=" + this.getSourceFileGenerator() + "]";
   }
 
 }

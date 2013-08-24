@@ -15,6 +15,8 @@
  */
 package de.martido.genny;
 
+import java.util.List;
+
 import de.martido.genny.util.Logger;
 
 /**
@@ -35,27 +37,29 @@ public class Genny {
   /**
    * Generate source files based on the given {@link GennyConfiguration}.
    * 
-   * @param configuration
+   * @param conf
    *          The {@link GennyConfiguration}.
-   * @param def
-   *          The {@link GennyDefinition}.
+   * @param inputFiles
+   *          The paths to the input files from which the {@code targetClass} shall be generated.
+   * @param targetClass
+   *          The target class to generate.
    * @throws Exception
    *           If an error occurs.
    */
-  public void generateFrom(GennyConfiguration configuration, GeneratorDefinition def)
+  public void generateFrom(GennyConfiguration conf, List<String> inputFiles, SourceFile targetClass)
       throws Exception {
 
-    GeneratorDefinition newDef = configuration.configure(def);
+    GeneratorDefinition def = conf.configure(inputFiles);
+
     if (Logger.isVerbose()) {
-      System.out.println(newDef.toString());
+      System.out.println(def.toString());
     }
 
-    SourceFile sourceFile = newDef.getSourceFile();
-    FieldProvider fieldProvider = newDef.getFieldProvider();
-    FieldMapper fieldMapper = newDef.getFieldMapper();
-    FieldFilter fieldFilter = newDef.getFieldFilter();
-    SourceFileGenerator sourceFileGenerator = newDef.getSourceFileGenerator();
-    sourceFileGenerator.generate(sourceFile, fieldProvider, fieldMapper, fieldFilter);
+    FieldProvider fieldProvider = def.getFieldProvider();
+    FieldMapper fieldMapper = def.getFieldMapper();
+    FieldFilter fieldFilter = def.getFieldFilter();
+    SourceFileGenerator sourceFileGenerator = def.getSourceFileGenerator();
+    sourceFileGenerator.generate(targetClass, fieldProvider, fieldMapper, fieldFilter);
   }
 
 }

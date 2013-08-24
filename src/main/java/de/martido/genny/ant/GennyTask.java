@@ -27,7 +27,7 @@ import org.apache.tools.ant.types.FileSet;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.Genny;
 import de.martido.genny.GennyConfiguration;
-import de.martido.genny.provider.PropertyFileProvider;
+import de.martido.genny.SourceFile;
 
 /**
  * An Ant task for Genny.
@@ -115,9 +115,9 @@ public class GennyTask extends Task {
   private GennyConfiguration createConfiguration() {
 
     return new GennyConfiguration() {
-      public GeneratorDefinition configure(GeneratorDefinition def) {
-        def.setFieldProvider(PropertyFileProvider.forFiles(def.getInputFiles()).build());
-        return def;
+      @Override
+      public GeneratorDefinition configure(List<String> inputFiles) {
+        return new GeneratorDefinition(inputFiles);
       }
     };
   }
@@ -136,27 +136,22 @@ public class GennyTask extends Task {
     for (FileSet fs : this.fileSets) {
       DirectoryScanner ds = fs.getDirectoryScanner(this.getProject());
       for (String filename : ds.getIncludedFiles()) {
-        File baseDir  = ds.getBasedir();             
+        File baseDir = ds.getBasedir();
         File file = new File(baseDir, filename);
         inputFiles.add(file.getAbsolutePath());
       }
     }
 
-    GennyConfiguration conf;
-    if (this.configurationClass != null) {
-      conf = this.createConfiguration(this.configurationClass);
-    }
-    else {
-      conf = this.createConfiguration();
-    }
+    SourceFile sourceFile = new SourceFile(this.targetClass, this.baseDirectory);
+
+    GennyConfiguration conf = this.configurationClass != null
+        ? this.createConfiguration(this.configurationClass)
+        : this.createConfiguration();
 
     try {
-      GeneratorDefinition def = new GeneratorDefinition(
-          this.targetClass, this.baseDirectory, inputFiles);
-      new Genny(this.verbose).generateFrom(conf, def);
+      new Genny(this.verbose).generateFrom(conf, inputFiles, sourceFile);
     } catch (Exception ex) {
       throw new BuildException(ex);
     }
   }
-
 }

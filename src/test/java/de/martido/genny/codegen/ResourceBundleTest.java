@@ -15,11 +15,17 @@
  */
 package de.martido.genny.codegen;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
+import de.martido.genny.SourceFileGenerator;
 
 /**
  * @author Martin Dobmeier
@@ -34,12 +40,24 @@ public class ResourceBundleTest extends AbstractTestCase {
   @Test
   public void should_generate_from_resource_bundle() {
 
-    GeneratorDefinition def = new GeneratorDefinition(
-        this.templateEngine.getExtension() + ".Resource_Bundle",
-        BASE_DIRECTORY, "src/test/resources/MessageResources.properties");
-    this.generate(def);
+    GennyConfiguration conf = new GennyConfiguration() {
 
-    Object obj = this.getInstanceOfGeneratedClass(def);
+      @Override
+      public GeneratorDefinition configure(final List<String> inputFiles) {
+        return new GeneratorDefinition(inputFiles) {
+
+          @Override
+          public SourceFileGenerator getSourceFileGenerator() {
+            return ResourceBundleTest.this.templateEngine.getSourceFileGenerator(null);
+          }
+        };
+      }
+    };
+
+    List<String> inputFiles = Arrays.asList("src/test/resources/MessageResources.properties");
+    SourceFile targetClass = this.createSourceFile("Resource_Bundle");
+    this.generate(conf, inputFiles, targetClass);
+    Object obj = this.getInstanceOfGeneratedClass(targetClass);
     this.assertField(obj, "buzz_says", "buzz.says");
     this.assertField(obj, "yoda_says", "yoda.says");
   }

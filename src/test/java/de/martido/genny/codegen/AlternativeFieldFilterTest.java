@@ -15,6 +15,9 @@
  */
 package de.martido.genny.codegen;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -22,6 +25,9 @@ import org.junit.runners.Parameterized;
 import de.martido.genny.Field;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.GeneratorDefinition;
+import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFile;
+import de.martido.genny.SourceFileGenerator;
 
 /**
  * @author Martin Dobmeier
@@ -36,22 +42,34 @@ public class AlternativeFieldFilterTest extends AbstractTestCase {
   @Test
   public void should_apply_alternative_field_filter() {
 
-    GeneratorDefinition def = new GeneratorDefinition(
-        this.templateEngine.getExtension() + ".Alternative_Field_Filter",
-        BASE_DIRECTORY,
-        "src/test/resources/test.1.properties");
+    GennyConfiguration conf = new GennyConfiguration() {
 
-    // Exclude a property called 'property.the.uglzy'.
-    def.setFieldFilter(new FieldFilter() {
       @Override
-      public boolean include(Field field) {
-        return field.getName().equals("property.the.ugly") ? false : true;
+      public GeneratorDefinition configure(List<String> inputFiles) {
+        return new GeneratorDefinition(inputFiles) {
+
+          @Override
+          public SourceFileGenerator getSourceFileGenerator() {
+            return AlternativeFieldFilterTest.this.templateEngine.getSourceFileGenerator(null);
+          }
+
+          @Override
+          public FieldFilter getFieldFilter() {
+            return new FieldFilter() {
+              @Override
+              public boolean include(Field field) {
+                return field.getName().equals("property.the.ugly") ? false : true;
+              }
+            };
+          }
+        };
       }
-    });
+    };
 
-    this.generate(def);
-
-    Object obj = this.getInstanceOfGeneratedClass(def);
+    List<String> inputFiles = Arrays.asList("src/test/resources/test.1.properties");
+    SourceFile targetClass = this.createSourceFile("Alternative_Field_Filter");
+    this.generate(conf, inputFiles, targetClass);
+    Object obj = this.getInstanceOfGeneratedClass(targetClass);
     this.assertField(obj, "property_the_good", "property.the.good");
     this.assertField(obj, "property_the_bad", "property.the.bad");
   }

@@ -15,42 +15,54 @@
  */
 package de.martido.genny.example.config;
 
+import java.util.List;
+
 import de.martido.genny.Field;
 import de.martido.genny.FieldFilter;
 import de.martido.genny.FieldMapper;
 import de.martido.genny.GeneratorDefinition;
 import de.martido.genny.GennyConfiguration;
+import de.martido.genny.SourceFileGenerator;
 import de.martido.genny.codegen.StringTemplateSourceFileGenerator;
 
 public class PropertiesConfiguration implements GennyConfiguration {
 
   @Override
-  public GeneratorDefinition configure(GeneratorDefinition def) {
+  public GeneratorDefinition configure(List<String> inputFiles) {
+    return new GeneratorDefinition(inputFiles) {
 
-    /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
-    def.setFieldMapper(new FieldMapper() {
+      /* A custom FieldMapper: Exclude a prefix and make field names upper case. */
       @Override
-      public Field map(Field f) {
-        String name = f.getName()
-            .replaceFirst("prefix\\.", "")
-            .replaceAll("\\.", "_")
-            .toUpperCase();
-        return new Field(name, f.getValue(), f.getJavadoc());
+      public FieldMapper getFieldMapper() {
+        return new FieldMapper() {
+          @Override
+          public Field map(Field f) {
+            String name = f.getName()
+                .replaceFirst("prefix\\.", "")
+                .replaceAll("\\.", "_")
+                .toUpperCase();
+            return new Field(name, f.getValue(), f.getJavadoc());
+          }
+        };
       }
-    });
 
-    /* A custom FieldFilter: Exclude certain properties. */
-    def.setFieldFilter(new FieldFilter() {
+      /* A custom FieldFilter: Exclude certain properties. */
       @Override
-      public boolean include(Field field) {
-        return field.getName().equals("property.internal") ? false : true;
+      public FieldFilter getFieldFilter() {
+        return new FieldFilter() {
+          @Override
+          public boolean include(Field field) {
+            return field.getName().equals("property.internal") ? false : true;
+          }
+        };
       }
-    });
 
-    /* A custom StringTemplate template. */
-    def.setSourceFileGenerator(new StringTemplateSourceFileGenerator("customTemplate.stg"));
-
-    return def;
+      /* A custom StringTemplate template. */
+      @Override
+      public SourceFileGenerator getSourceFileGenerator() {
+        return new StringTemplateSourceFileGenerator("customTemplate.stg");
+      }
+    };
   }
 
 }
